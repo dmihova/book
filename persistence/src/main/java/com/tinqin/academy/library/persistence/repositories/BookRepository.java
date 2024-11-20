@@ -1,7 +1,7 @@
-package com.tinqin.academy.library.repositories;
+package com.tinqin.academy.library.persistence.repositories;
 
 
-import com.tinqin.academy.library.models.Book;
+import com.tinqin.academy.library.persistence.models.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

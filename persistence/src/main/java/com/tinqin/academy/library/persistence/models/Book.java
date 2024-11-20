@@ -1,7 +1,7 @@
-package com.tinqin.academy.library.models;
+package com.tinqin.academy.library.persistence.models;
 
 
-import com.tinqin.academy.library.enums.BookStatus;
+import com.tinqin.academy.library.persistence.enums.BookStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

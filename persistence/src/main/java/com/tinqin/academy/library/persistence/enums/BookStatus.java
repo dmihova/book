@@ -1,4 +1,4 @@
-package com.tinqin.academy.library.enums;
+package com.tinqin.academy.library.persistence.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
