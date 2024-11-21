@@ -28,10 +28,11 @@ public class GetBookProcessor implements GetBook {
         try {
             UUID id = UUID.fromString(input.getBookId());
         } catch (Exception ex) {
-            throw new  RuntimeException("Book uuid format wrong");
+            throw new ObjectNotFoundException(input, input.getBookId());
         }
-        return  bookRepository.findById(UUID.fromString(input.getBookId()))
-                .orElseThrow(() ->  new RuntimeException("Book not found"));
+        return  bookRepository
+                .findById(UUID.fromString(input.getBookId()))
+                .orElseThrow(() ->  new ObjectNotFoundException(input,input.getBookId()));
 
     }
 

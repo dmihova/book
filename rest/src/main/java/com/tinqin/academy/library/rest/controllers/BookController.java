@@ -15,8 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @RestController
 
@@ -33,13 +31,10 @@ public class BookController {
                 .builder()
                 .bookId(bookId)
                 .build();
-        try {
-            GetBookOutput result = getBook.process(input);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        }
-        catch (RuntimeException exc) { /// some custom  exceptions?
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+
+         GetBookOutput result = getBook.process(input);
+         return new ResponseEntity<>(result, HttpStatus.OK);
+
     }
 
     @GetMapping(APIRoutes.API_BOOK)
