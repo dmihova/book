@@ -1,11 +1,11 @@
 package com.tinqin.academy.library.persistence.models;
 
 
-import com.tinqin.academy.library.persistence.enums.BookStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -24,29 +24,42 @@ public class Book {
     @Column(name="id",nullable=false)
     private UUID id;
 
-    @Column(name="title",nullable=false)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name="author",nullable=false)
+    @Column(name = "author", nullable = false)
     private String author;
 
-    @Column(name="book_status",nullable=false)
-    @Enumerated(EnumType.STRING)
-    private BookStatus status;
+    @Column(name = "pages", nullable = false)
+    private String pages;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    List<BookRental> rentals;
+    @Column(name = "price", nullable = false)
+    private BigDecimal price;
+
+    @Column(name = "price_per_rental", nullable = false)
+    private BigDecimal pricePerRental;
+
+    @Column(name = "stock", nullable = false)
+    private Integer stock;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+    @Column(name = "updated_on" )
+    private LocalDateTime updatedOn;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
 
    // @ManyToOne
    // @JoinColumn(name="autor_id")
    // private User author1;
 
-    @ManyToMany
-    @JoinTable(
-             name="book_categories",
-             joinColumns = @JoinColumn (name ="book_id"),
-             inverseJoinColumns = @JoinColumn(name="category_id"))
-    private List<Category> categories;
+//    @ManyToMany
+//    @JoinTable(
+//             name="book_categories",
+//             joinColumns = @JoinColumn (name ="book_id"),
+//             inverseJoinColumns = @JoinColumn(name="category_id"))
+//    private List<Category> categories;
 
 
 

@@ -1,4 +1,4 @@
-package com.tinqin.academy.library.rest.controllers;
+package com.tinqin.academy.library.rest.controllers.hello;
 
 import com.tinqin.academy.library.api.hello.HelloWorld;
 import com.tinqin.academy.library.api.hello.HelloWorldInput;
@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+//@RestController
 @RequiredArgsConstructor
 public class HelloWorldController {
     private final HelloWorld helloWorld;
