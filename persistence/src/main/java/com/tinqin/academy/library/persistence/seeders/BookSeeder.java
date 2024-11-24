@@ -1,6 +1,8 @@
 package com.tinqin.academy.library.persistence.seeders;
 
+import com.tinqin.academy.library.persistence.models.Author;
 import com.tinqin.academy.library.persistence.models.Book;
+import com.tinqin.academy.library.persistence.repositories.AuthorRepository;
 import com.tinqin.academy.library.persistence.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
@@ -14,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 
@@ -22,36 +25,43 @@ import java.util.Random;
 public class BookSeeder implements ApplicationRunner {
 
     private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         //book by book with book repository save all
-        //if sql ->jdbc template with entity manager +read from file
+        //if sql ->jdbc template with entity manager +read from file sql
 
         //only if table is empty
-         if (bookRepository.count() > 0) {
-              return;
-         }
-        String fileWithPath = "rest/src/main/resources/files/books.csv";
+        if (bookRepository.count() > 0) {
+            return;
+        }
+
+        String fileWithPath = "rest/src/main/resources/files/books_2.csv";
         String currentRelativePath = Paths.get("").toAbsolutePath().toString();
-
-
         Random rand = new Random();
 
         List<Book> newBooks = Files.readAllLines(Path.of(fileWithPath))
                 .stream()
                 .filter(textLine -> !textLine.isBlank())
                 .map(textLine -> textLine.split(";"))
+                .filter(bookArray ->  bookArray.length>=5)
+                .filter(bookArray -> !bookArray[5].trim().equals("Title"))
                 .map(bookArray -> Book
                         .builder()
-                        .title(bookArray[2].trim())
-                        .author(bookArray[0].trim())
-                        .pages(String.valueOf( rand.nextInt(50,1000)))
-                        .price(BigDecimal.valueOf(rand.nextInt(5,50)))
-                        .pricePerRental(BigDecimal.valueOf(rand.nextInt(1,5)))
-                        .stock(rand.nextInt(1,10))
+                        .title(bookArray[5].trim())
+                        .author(getDBAuthor(bookArray[1].trim()))
+                        .pages(String.valueOf(rand.nextInt(50, 1000)))
+                        .price(BigDecimal.valueOf(rand.nextInt(5, 50)))
+                        .pricePerRental(BigDecimal.valueOf(rand.nextInt(1, 5)))
+                        .stock(rand.nextInt(1, 10))
                         .createdAt(LocalDateTime.now())
+                        .isDeleted(false)
                         .build())
+                .filter(bookEntity -> {
+                    Author author = bookEntity.getAuthor();
+                    return author != null;
+                })
                 .toList();
 
 
@@ -59,4 +69,37 @@ public class BookSeeder implements ApplicationRunner {
 
 
     }
+
+    private Author getDBAuthor(String authorName) {
+        if (authorName.isBlank()) {
+            return null;
+        }
+        String[] authorNames = authorName.split("\\s+");
+        String lastName = authorNames[authorNames.length - 1];
+        if (lastName.isBlank()) {
+            return null;
+        }
+        String firstName = "N/A";
+        if (authorNames.length > 1) {
+            StringBuilder sb = new StringBuilder(authorNames[0]);
+            for (int i = 1; i < authorNames.length-1; i++) {
+                sb.append(" ").append(authorNames[i]);
+            }
+            firstName= sb.toString();
+        }
+
+        Optional<Author> optionalAuthor = authorRepository
+                .findByLastNameAndFirstName(lastName, firstName);
+        if (optionalAuthor.isPresent()) {
+            return optionalAuthor.get();
+        }
+        Author newAuthor =  Author
+                .builder()
+                .lastName(lastName)
+                .firstName(firstName)
+                .build();
+
+        return authorRepository.save(newAuthor);
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.tinqin.academy.library.api.model.book;
+package com.tinqin.academy.library.api.models.book;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

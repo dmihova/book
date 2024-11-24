@@ -1,4 +1,4 @@
-package com.tinqin.academy.library.api.operations.getbook;
+package com.tinqin.academy.library.api.operations.deletebook;
 
 import com.tinqin.academy.library.api.base.ProcessorOutput;
 import lombok.AllArgsConstructor;
@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class GetBookOutput implements ProcessorOutput {
-    private String author;
-    private String title;
-    private String pages;
+public class DeleteBookOutput implements ProcessorOutput {
+    private String id;
 }

@@ -1,7 +1,8 @@
-package com.tinqin.academy.library.api.operations.postbook;
+package com.tinqin.academy.library.api.operations.createbook;
 
 
 import com.tinqin.academy.library.api.base.ProcessorInput;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,17 +19,21 @@ import static com.tinqin.academy.library.api.ValidationMessages.BOOK_TITLE_SIZE;
 @NoArgsConstructor
 @Getter
 @Builder
-public class PostBookInput implements ProcessorInput {
+public class CreateBookInput implements ProcessorInput {
 
 
-    @NotBlank( )
+    @NotBlank
     @Length(min=5,max=100,message = BOOK_TITLE_SIZE)
     private String title;
-    @NotBlank( )
-    private String author;
-    @NotBlank( )
+
+    @UUID
+    private String authorId;
+
+    @NotBlank
     private String pages;
+
     @NotBlank( )
+    @DecimalMin(value ="1.0")
     private BigDecimal price;
 
 }

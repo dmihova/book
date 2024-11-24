@@ -22,5 +22,10 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<ErrorMessage>(message, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(value = {IllegalArgumentException.class})
+    public ResponseEntity<ErrorMessage> ObjectNotFoundException(IllegalArgumentException ex, WebRequest request) {
+        ErrorMessage message = new ErrorMessage(ex.getMessage());
+        return new ResponseEntity<ErrorMessage>(message, HttpStatus.NOT_FOUND);
+    }
 
 }

@@ -8,13 +8,13 @@ import com.tinqin.academy.library.persistence.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
-import java.util.UUID;
 
+import java.util.UUID;
 
 
 @Service
 @RequiredArgsConstructor
-public class GetBookProcessor implements GetBook {
+public class GetBookOperation implements GetBook {
 
     private final BookRepository bookRepository;
 
@@ -25,15 +25,9 @@ public class GetBookProcessor implements GetBook {
     }
 
     private Book fetchBook(GetBookInput input) {
-        try {
-            UUID id = UUID.fromString(input.getBookId());
-        } catch (Exception ex) {
-            throw new ObjectNotFoundException(input, input.getBookId());
-        }
-        return  bookRepository
+        return bookRepository
                 .findById(UUID.fromString(input.getBookId()))
-                .orElseThrow(() ->  new ObjectNotFoundException(input,input.getBookId()));
-
+                .orElseThrow(() -> new ObjectNotFoundException(input, input.getBookId()));
     }
 
     private GetBookOutput convertGetBookInputToGetBookOutput(Book book) {

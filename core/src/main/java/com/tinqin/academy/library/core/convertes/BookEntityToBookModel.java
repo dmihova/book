@@ -1,7 +1,7 @@
 package com.tinqin.academy.library.core.convertes;
 
 
-import com.tinqin.academy.library.api.model.book.BookModel;
+import com.tinqin.academy.library.api.models.book.BookModel;
 import com.tinqin.academy.library.persistence.models.Book;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ public class BookEntityToBookModel implements Converter<Book, BookModel> {
         return BookModel
                 .builder()
                 .title(source.getTitle())
-                .author(source.getAuthor())
+                .author(source.getAuthor().getLastName())
                 .pages(source.getPages())
                 .id(source.getId())
                 .build();

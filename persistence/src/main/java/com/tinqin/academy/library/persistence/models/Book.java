@@ -3,6 +3,7 @@ package com.tinqin.academy.library.persistence.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -27,8 +28,9 @@ public class Book {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "author", nullable = false)
-    private String author;
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Author author;
 
     @Column(name = "pages", nullable = false)
     private String pages;
@@ -43,16 +45,16 @@ public class Book {
     private Integer stock;
 
     @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
+
     @Column(name = "updated_on" )
     private LocalDateTime updatedOn;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
-   // @ManyToOne
-   // @JoinColumn(name="autor_id")
-   // private User author1;
+
 
 //    @ManyToMany
 //    @JoinTable(
