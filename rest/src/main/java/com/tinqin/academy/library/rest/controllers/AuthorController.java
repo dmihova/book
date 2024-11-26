@@ -1,6 +1,7 @@
 package com.tinqin.academy.library.rest.controllers;
 
 import com.tinqin.academy.library.api.APIRoutes;
+import com.tinqin.academy.library.api.errors.OperationError;
 import com.tinqin.academy.library.api.operations.createauthor.CreateAuthor;
 import com.tinqin.academy.library.api.operations.createauthor.CreateAuthorInput;
 import com.tinqin.academy.library.api.operations.createauthor.CreateAuthorOutput;
@@ -12,6 +13,10 @@ import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthorInput;
 import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthorOutput;
 import com.tinqin.academy.library.api.operations.querybook.QueryBookInput;
 import com.tinqin.academy.library.api.operations.querybook.QueryBookOutput;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.vavr.control.Either;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +25,9 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 
-public class AuthorController {
+public class AuthorController extends BaseController {
 
-    private final GetAuthor  getAuthor;
+    private final GetAuthor getAuthor;
     private final CreateAuthor createAuthor;
     private final QueryAuthor queryAuthor;
 
@@ -33,8 +38,8 @@ public class AuthorController {
                 .builder()
                 .authorId(authorId)
                 .build();
-        GetAuthorOutput getAuthorOutput = getAuthor.process(getAuthorInput);
-        return new ResponseEntity<>(getAuthorOutput, HttpStatus.OK);
+        Either<OperationError, GetAuthorOutput> getAuthorOutput = getAuthor.process(getAuthorInput);
+        return mapToResponseEntity(getAuthorOutput, HttpStatus.OK);
     }
 
 
@@ -42,8 +47,8 @@ public class AuthorController {
     public ResponseEntity<?> getAuthors(
             @RequestParam(value = "firstName", required = false, defaultValue = "") String firstName,
             @RequestParam(value = "lastName", required = false, defaultValue = "") String lastName
-          //  @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
-          //  @RequestParam(value = "size", required = false  ) Integer size
+            //  @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            //  @RequestParam(value = "size", required = false  ) Integer size
     ) {
 
         QueryAuthorInput input = QueryAuthorInput
@@ -51,16 +56,21 @@ public class AuthorController {
                 .firstName(firstName.trim())
                 .lastName(lastName.trim())
                 .build();
-        QueryAuthorOutput result = queryAuthor.process(input);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        Either<OperationError, QueryAuthorOutput> result = queryAuthor.process(input);
+        return mapToResponseEntity(result, HttpStatus.OK);
 
 
     }
 
     @PostMapping(APIRoutes.API_AUTHOR)
-    public ResponseEntity<?> postBooks(@RequestBody CreateAuthorInput input) {
+    @Operation( summary = "Create a author",
+            description = "Create a author and return UUID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "OK"),
+            @ApiResponse(responseCode = "404", description = "Not found")})
 
-        CreateAuthorOutput process = createAuthor.process(input);
+    public ResponseEntity<?> createAuthor(@RequestBody CreateAuthorInput input) {
+        Either<OperationError, CreateAuthorOutput> process = createAuthor.process(input);
         return new ResponseEntity<>(process, HttpStatus.CREATED);
 
     }

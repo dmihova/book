@@ -1,35 +1,52 @@
 package com.tinqin.academy.library.core.processors.book;
 
 
+import com.tinqin.academy.library.api.errors.OperationError;
+import com.tinqin.academy.library.api.operations.createbook.CreateBookInput;
+import com.tinqin.academy.library.api.operations.createbook.CreateBookOutput;
 import com.tinqin.academy.library.api.operations.deletebook.DeleteBook;
 import com.tinqin.academy.library.api.operations.deletebook.DeleteBookInput;
 import com.tinqin.academy.library.api.operations.deletebook.DeleteBookOutput;
+import com.tinqin.academy.library.core.errorhandler.base.ErrorHandler;
+import com.tinqin.academy.library.core.errorhandler.exceptions.BusinessException;
+import com.tinqin.academy.library.persistence.models.Author;
 import com.tinqin.academy.library.persistence.models.Book;
 import com.tinqin.academy.library.persistence.repositories.BookRepository;
+import io.vavr.control.Either;
+import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+import static com.tinqin.academy.library.api.ValidationMessages.BOOK_NOT_FOUND;
+
 @Service
 @RequiredArgsConstructor
 public class DeleteBookOperation implements DeleteBook {
     private final BookRepository bookRepository;
+    private final ErrorHandler errorHandler;
+
     @Override
-    public DeleteBookOutput process(DeleteBookInput input) {
-        Book book =  bookRepository
-                .findById(UUID.fromString(input.getBookId()))
-                .orElseThrow(() ->  new ObjectNotFoundException(input,input.getBookId()));
+    public Either<OperationError, DeleteBookOutput> process(DeleteBookInput input) {
 
+        return getBook(input)
+                .flatMap(this::deleteBook)
+                .toEither()
+                .mapLeft(errorHandler::handle) ;
+    }
+
+    private Try<Book> getBook(DeleteBookInput input) {
+        return Try.of(() -> UUID.fromString(input.getBookId()))
+                .flatMap(bookId -> Try.of(() -> bookRepository.findById(bookId)
+                        .orElseThrow(() -> new BusinessException(BOOK_NOT_FOUND))));
+    }
+    private Try<DeleteBookOutput> deleteBook(Book book) {
         book.setIsDeleted(true);
-        bookRepository.save(book);
-
-        return DeleteBookOutput
-                .builder()
-                .id(String.valueOf(book.getId()))
-                .build();
-
-
+        return Try.of(() ->  bookRepository.save(book))
+                .map(savedBook -> DeleteBookOutput.builder()
+                        .id(book.getId().toString())
+                        .build());
     }
 }

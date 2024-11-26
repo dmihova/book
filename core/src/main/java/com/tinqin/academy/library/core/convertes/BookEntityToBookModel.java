@@ -14,7 +14,7 @@ public class BookEntityToBookModel implements Converter<Book, BookModel> {
         return BookModel
                 .builder()
                 .title(source.getTitle())
-                .author(source.getAuthor().getLastName())
+                .author(source.getAuthor().getFullName())
                 .pages(source.getPages())
                 .id(source.getId())
                 .build();

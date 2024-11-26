@@ -15,12 +15,10 @@ import java.util.List;
 public class BookRepositoryCustomImpl implements BookRepositoryCustom {
     private final EntityManager entityManager;
 
-
-
     @Override
     public List<Book> findBooksByAuthorAndAuthorNameAndTitle(String title,
-                                                    Author author, String authorFirstName ,
-                                                             String authorLastName ) {
+                                                             Author author, String authorFirstName,
+                                                             String authorLastName) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Book> cq = cb.createQuery(Book.class);
@@ -41,14 +39,14 @@ public class BookRepositoryCustomImpl implements BookRepositoryCustom {
             predicates.add(cb.like(book.get("title"), title + "%"));
         }
 
-      //  predicates.add(cb.equal(book.get("isDeleted"), false));
+        //  predicates.add(cb.equal(book.get("isDeleted"), false));
 
 
         cq.where(predicates.toArray(new Predicate[0]));
 
         return entityManager
                 .createQuery(cq)
-               // .setFirstResult(1)
+                // .setFirstResult(1)
                 .setMaxResults(50)
                 .getResultList();
 

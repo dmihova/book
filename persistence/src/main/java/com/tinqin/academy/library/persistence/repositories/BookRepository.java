@@ -1,6 +1,5 @@
 package com.tinqin.academy.library.persistence.repositories;
 
-
 import com.tinqin.academy.library.persistence.models.Author;
 import com.tinqin.academy.library.persistence.models.Book;
 import org.springframework.data.jpa.repository.JpaRepository;

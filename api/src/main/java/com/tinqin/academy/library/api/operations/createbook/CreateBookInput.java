@@ -32,7 +32,6 @@ public class CreateBookInput implements ProcessorInput {
     @NotBlank
     private String pages;
 
-    @NotBlank( )
     @DecimalMin(value ="1.0")
     private BigDecimal price;
 
