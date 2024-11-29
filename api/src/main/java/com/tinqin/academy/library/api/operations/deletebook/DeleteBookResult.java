@@ -1,6 +1,6 @@
 package com.tinqin.academy.library.api.operations.deletebook;
 
-import com.tinqin.academy.library.api.base.ProcessorOutput;
+import com.tinqin.academy.library.api.base.ProcessorResult;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class DeleteBookOutput implements ProcessorOutput {
+public class DeleteBookResult implements ProcessorResult {
     private String id;
 }

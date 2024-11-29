@@ -1,6 +1,6 @@
 package com.tinqin.academy.library.api.operations.getauthor;
 
-import com.tinqin.academy.library.api.base.ProcessorOutput;
+import com.tinqin.academy.library.api.base.ProcessorResult;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class GetAuthorOutput implements ProcessorOutput {
+public class GetAuthorResult implements ProcessorResult {
     private UUID authorId;
     private String firstName;
     private String lastName;

@@ -4,15 +4,13 @@ import com.tinqin.academy.library.api.APIRoutes;
 import com.tinqin.academy.library.api.errors.OperationError;
 import com.tinqin.academy.library.api.operations.createauthor.CreateAuthor;
 import com.tinqin.academy.library.api.operations.createauthor.CreateAuthorInput;
-import com.tinqin.academy.library.api.operations.createauthor.CreateAuthorOutput;
+import com.tinqin.academy.library.api.operations.createauthor.CreateAuthorResult;
 import com.tinqin.academy.library.api.operations.getauthor.GetAuthor;
 import com.tinqin.academy.library.api.operations.getauthor.GetAuthorInput;
-import com.tinqin.academy.library.api.operations.getauthor.GetAuthorOutput;
+import com.tinqin.academy.library.api.operations.getauthor.GetAuthorResult;
 import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthor;
 import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthorInput;
-import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthorOutput;
-import com.tinqin.academy.library.api.operations.querybook.QueryBookInput;
-import com.tinqin.academy.library.api.operations.querybook.QueryBookOutput;
+import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthorResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -38,7 +36,7 @@ public class AuthorController extends BaseController {
                 .builder()
                 .authorId(authorId)
                 .build();
-        Either<OperationError, GetAuthorOutput> getAuthorOutput = getAuthor.process(getAuthorInput);
+        Either<OperationError, GetAuthorResult> getAuthorOutput = getAuthor.process(getAuthorInput);
         return mapToResponseEntity(getAuthorOutput, HttpStatus.OK);
     }
 
@@ -56,7 +54,7 @@ public class AuthorController extends BaseController {
                 .firstName(firstName.trim())
                 .lastName(lastName.trim())
                 .build();
-        Either<OperationError, QueryAuthorOutput> result = queryAuthor.process(input);
+        Either<OperationError, QueryAuthorResult> result = queryAuthor.process(input);
         return mapToResponseEntity(result, HttpStatus.OK);
 
 
@@ -70,7 +68,7 @@ public class AuthorController extends BaseController {
             @ApiResponse(responseCode = "404", description = "Not found")})
 
     public ResponseEntity<?> createAuthor(@RequestBody CreateAuthorInput input) {
-        Either<OperationError, CreateAuthorOutput> process = createAuthor.process(input);
+        Either<OperationError, CreateAuthorResult> process = createAuthor.process(input);
         return new ResponseEntity<>(process, HttpStatus.CREATED);
 
     }

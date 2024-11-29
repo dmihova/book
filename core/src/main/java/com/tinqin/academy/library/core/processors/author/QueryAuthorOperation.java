@@ -3,14 +3,9 @@ package com.tinqin.academy.library.core.processors.author;
 
 import com.tinqin.academy.library.api.errors.OperationError;
 import com.tinqin.academy.library.api.models.author.AuthorModel;
-import com.tinqin.academy.library.api.models.book.BookModel;
-import com.tinqin.academy.library.api.operations.createbook.CreateBookOutput;
-import com.tinqin.academy.library.api.operations.getauthor.GetAuthor;
 import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthor;
 import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthorInput;
-import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthorOutput;
-import com.tinqin.academy.library.api.operations.querybook.QueryBookInput;
-import com.tinqin.academy.library.api.operations.querybook.QueryBookOutput;
+import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthorResult;
 import com.tinqin.academy.library.core.errorhandler.base.ErrorHandler;
 import com.tinqin.academy.library.persistence.models.Author;
 import com.tinqin.academy.library.persistence.repositories.AuthorRepository;
@@ -32,10 +27,10 @@ public class QueryAuthorOperation implements QueryAuthor {
 
     //criteria builder - separate component to build complicated cases
     @Override
-    public Either<OperationError, QueryAuthorOutput> process(QueryAuthorInput input) {
+    public Either<OperationError, QueryAuthorResult> process(QueryAuthorInput input) {
 
         return findAuthors(input)
-                .map(authorModelList -> QueryAuthorOutput
+                .map(authorModelList -> QueryAuthorResult
                         .builder()
                         .authorModelList(authorModelList)
                         .build()

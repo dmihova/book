@@ -5,16 +5,16 @@ import com.tinqin.academy.library.api.APIRoutes;
 import com.tinqin.academy.library.api.errors.OperationError;
 import com.tinqin.academy.library.api.operations.deletebook.DeleteBook;
 import com.tinqin.academy.library.api.operations.deletebook.DeleteBookInput;
-import com.tinqin.academy.library.api.operations.deletebook.DeleteBookOutput;
+import com.tinqin.academy.library.api.operations.deletebook.DeleteBookResult;
 import com.tinqin.academy.library.api.operations.getbook.GetBook;
 import com.tinqin.academy.library.api.operations.getbook.GetBookInput;
-import com.tinqin.academy.library.api.operations.getbook.GetBookOutput;
+import com.tinqin.academy.library.api.operations.getbook.GetBookResult;
 import com.tinqin.academy.library.api.operations.createbook.CreateBook;
 import com.tinqin.academy.library.api.operations.createbook.CreateBookInput;
-import com.tinqin.academy.library.api.operations.createbook.CreateBookOutput;
+import com.tinqin.academy.library.api.operations.createbook.CreateBookResult;
 import com.tinqin.academy.library.api.operations.querybook.QueryBook;
 import com.tinqin.academy.library.api.operations.querybook.QueryBookInput;
-import com.tinqin.academy.library.api.operations.querybook.QueryBookOutput;
+import com.tinqin.academy.library.api.operations.querybook.QueryBookResult;
 import io.vavr.control.Either;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class BookController extends BaseController {
                 .bookId(bookId)
                 .build();
 
-        Either<OperationError, GetBookOutput> result = getBook.process(input);
+        Either<OperationError, GetBookResult> result = getBook.process(input);
         return mapToResponseEntity(result, HttpStatus.OK);
     }
 
@@ -59,7 +59,7 @@ public class BookController extends BaseController {
                 .authorFirstName(authorFirstName)
                 .authorLastName(authorLastName)
                 .build();
-        Either<OperationError, QueryBookOutput> result = queryBook.process(input);
+        Either<OperationError, QueryBookResult> result = queryBook.process(input);
         return mapToResponseEntity(result, HttpStatus.OK);
 
 
@@ -67,7 +67,7 @@ public class BookController extends BaseController {
 
     @PostMapping(APIRoutes.API_BOOK)
     public ResponseEntity<?> postBook(@Valid @RequestBody CreateBookInput input) {
-        Either<OperationError, CreateBookOutput> process = createBook.process(input);
+        Either<OperationError, CreateBookResult> process = createBook.process(input);
         return mapToResponseEntity(process, HttpStatus.CREATED);
 
     }
@@ -79,7 +79,7 @@ public class BookController extends BaseController {
                 .builder()
                 .bookId(bookId)
                 .build();
-        Either<OperationError, DeleteBookOutput> process = deleteBook.process(input);
+        Either<OperationError, DeleteBookResult> process = deleteBook.process(input);
         return mapToResponseEntity(process, HttpStatus.CREATED);
 
     }

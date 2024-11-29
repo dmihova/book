@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class QueryBookInput implements ProcessorInput {
 
     private String title;
+
     private String authorId;
     private String authorFirstName;
     private String authorLastName;

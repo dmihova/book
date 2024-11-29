@@ -3,7 +3,9 @@ package com.tinqin.academy.library.core.errorhandler.components;
 import com.tinqin.academy.library.api.errors.BeError;
 import com.tinqin.academy.library.api.errors.OperationError;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
+@Component
 public class InternalErrorHandlerComponent extends BaseErrorHandlerComponent {
     @Override
     public OperationError handle(Throwable throwable) {

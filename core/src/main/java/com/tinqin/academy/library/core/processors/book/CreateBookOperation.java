@@ -3,7 +3,7 @@ package com.tinqin.academy.library.core.processors.book;
 import com.tinqin.academy.library.api.errors.OperationError;
 import com.tinqin.academy.library.api.operations.createbook.CreateBook;
 import com.tinqin.academy.library.api.operations.createbook.CreateBookInput;
-import com.tinqin.academy.library.api.operations.createbook.CreateBookOutput;
+import com.tinqin.academy.library.api.operations.createbook.CreateBookResult;
 import com.tinqin.academy.library.core.errorhandler.base.ErrorHandler;
 import com.tinqin.academy.library.core.errorhandler.exceptions.BusinessException;
 import com.tinqin.academy.library.persistence.models.Author;
@@ -16,8 +16,6 @@ import io.vavr.control.Try;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static com.tinqin.academy.library.api.ValidationMessages.AUTHOR_NOT_FOUND;
@@ -32,7 +30,7 @@ public class CreateBookOperation implements CreateBook {
     private final ErrorHandler errorHandler;
 
     @Override
-    public  Either<OperationError, CreateBookOutput>  process(CreateBookInput input) {
+    public  Either<OperationError, CreateBookResult>  process(CreateBookInput input) {
           return getAuthor(input)
                 .flatMap(author -> createBook(input, author))
                 .flatMap(this::saveBook)
@@ -50,9 +48,9 @@ public class CreateBookOperation implements CreateBook {
         return Try.of(() -> conversionService.convert(input, Book.class));
     }
 
-    private Try<CreateBookOutput> saveBook(Book book) {
+    private Try<CreateBookResult> saveBook(Book book) {
         return Try.of(() -> bookRepository.save(book))
-                .map(savedBook -> CreateBookOutput.builder()
+                .map(savedBook -> CreateBookResult.builder()
                         .id(savedBook.getId())
                         .build());
     }
