@@ -20,9 +20,9 @@ import java.util.Optional;
 import java.util.Random;
 
 
-@Component
+//@Component
 @RequiredArgsConstructor
-public class BookSeeder implements ApplicationRunner {
+public class BookSeederRepository implements ApplicationRunner {
 
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;

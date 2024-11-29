@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Component
+//@Component
 @RequiredArgsConstructor
 @Order(1)
-public class AuthorSeeder implements ApplicationRunner {
+public class AuthorSeederJdbcTemplate implements ApplicationRunner {
     private final JdbcTemplate jdbcTemplate;
     private final String INSERT_AUTHOR_QUERY_TEMPLATE = """
             INSERT INTO authors (id, first_name, last_name)
@@ -38,7 +38,5 @@ public class AuthorSeeder implements ApplicationRunner {
         String query = INSERT_AUTHOR_QUERY_TEMPLATE + names;
 
         jdbcTemplate.execute(query);
-
     }
-
 }
