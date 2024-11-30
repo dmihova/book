@@ -15,6 +15,7 @@ import com.tinqin.academy.library.api.operations.createbook.CreateBookResult;
 import com.tinqin.academy.library.api.operations.querybook.QueryBook;
 import com.tinqin.academy.library.api.operations.querybook.QueryBookInput;
 import com.tinqin.academy.library.api.operations.querybook.QueryBookResult;
+import com.tinqin.academy.library.rest.controllers.base.BaseController;
 import io.vavr.control.Either;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
