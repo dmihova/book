@@ -25,10 +25,9 @@ public class QueryAuthorOperation implements QueryAuthor {
     private final ConversionService conversionService;
     private final ErrorHandler errorHandler;
 
-    //criteria builder - separate component to build complicated cases
+
     @Override
     public Either<OperationError, QueryAuthorResult> process(QueryAuthorInput input) {
-
         return findAuthors(input)
                 .map(authorModelList -> QueryAuthorResult
                         .builder()
@@ -37,7 +36,6 @@ public class QueryAuthorOperation implements QueryAuthor {
                 )
                 .toEither()
                 .mapLeft(errorHandler::handle);
-
     }
 
     private Try<List<AuthorModel>> findAuthors( QueryAuthorInput input)  {
@@ -45,16 +43,15 @@ public class QueryAuthorOperation implements QueryAuthor {
                 .stream()
                 .map(authorEntity -> conversionService.convert(authorEntity, AuthorModel.class))
                 .toList());
-
     }
 
     private Collection<Author> getAuthorsByParameter(QueryAuthorInput input) {
         if (!input.getLastName().isBlank()&&!input.getFirstName().isBlank()) {
-            return authorRepository.findAllByLastNameAndFirstName(input.getLastName(),input.getFirstName());
+            return authorRepository.findByFirstNameLikeAndLastNameLike(input.getFirstName(),input.getLastName());
         } else if (!input.getLastName().isBlank()) {
-            return authorRepository.findAllByLastName(input.getLastName());
+            return authorRepository.findByLastNameLike(input.getLastName());
         } else if (!input.getFirstName().isBlank()) {
-            return authorRepository.findAllByFirstName(input.getFirstName());
+            return authorRepository.findByFirstNameLike(input.getFirstName());
         }
         else {
             return authorRepository.findAll();

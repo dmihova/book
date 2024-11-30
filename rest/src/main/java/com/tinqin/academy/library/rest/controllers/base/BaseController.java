@@ -1,4 +1,4 @@
-package com.tinqin.academy.library.rest.controllers;
+package com.tinqin.academy.library.rest.controllers.base;
 
 import com.tinqin.academy.library.api.base.ProcessorResult;
 import com.tinqin.academy.library.api.errors.OperationError;

@@ -11,6 +11,7 @@ import com.tinqin.academy.library.api.operations.getauthor.GetAuthorResult;
 import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthor;
 import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthorInput;
 import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthorResult;
+import com.tinqin.academy.library.rest.controllers.base.BaseController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-
 public class AuthorController extends BaseController {
 
     private final GetAuthor getAuthor;
@@ -36,6 +36,7 @@ public class AuthorController extends BaseController {
                 .builder()
                 .authorId(authorId)
                 .build();
+
         Either<OperationError, GetAuthorResult> getAuthorOutput = getAuthor.process(getAuthorInput);
         return mapToResponseEntity(getAuthorOutput, HttpStatus.OK);
     }
@@ -43,10 +44,8 @@ public class AuthorController extends BaseController {
 
     @GetMapping(APIRoutes.API_AUTHOR)
     public ResponseEntity<?> getAuthors(
-            @RequestParam(value = "firstName", required = false, defaultValue = "") String firstName,
-            @RequestParam(value = "lastName", required = false, defaultValue = "") String lastName
-            //  @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
-            //  @RequestParam(value = "size", required = false  ) Integer size
+            @RequestParam(value = "firstName%", required = false, defaultValue = "") String firstName,
+            @RequestParam(value = "lastName%", required = false, defaultValue = "") String lastName
     ) {
 
         QueryAuthorInput input = QueryAuthorInput
@@ -54,6 +53,7 @@ public class AuthorController extends BaseController {
                 .firstName(firstName.trim())
                 .lastName(lastName.trim())
                 .build();
+
         Either<OperationError, QueryAuthorResult> result = queryAuthor.process(input);
         return mapToResponseEntity(result, HttpStatus.OK);
 
@@ -61,15 +61,15 @@ public class AuthorController extends BaseController {
     }
 
     @PostMapping(APIRoutes.API_AUTHOR)
-    @Operation( summary = "Create a author",
-            description = "Create a author and return UUID")
+    @Operation(summary = "Create author",
+            description = "Create author and return UUID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Not found")})
 
     public ResponseEntity<?> createAuthor(@RequestBody CreateAuthorInput input) {
         Either<OperationError, CreateAuthorResult> process = createAuthor.process(input);
-        return new ResponseEntity<>(process, HttpStatus.CREATED);
+        return mapToResponseEntity(process,HttpStatus.CREATED);
 
     }
 

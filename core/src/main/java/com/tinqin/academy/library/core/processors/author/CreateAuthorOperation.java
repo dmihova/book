@@ -31,8 +31,8 @@ public class CreateAuthorOperation implements CreateAuthor {
 
     private Try<CreateAuthorResult> saveAuthor(Author author) {
         return Try.of(() -> authorRepository.save(author))
-                .map(savedBook -> CreateAuthorResult.builder()
-                        .id(savedBook.getId())
+                .map(savedAuthor -> CreateAuthorResult.builder()
+                        .id(savedAuthor.getId())
                         .build());
     }
 }
