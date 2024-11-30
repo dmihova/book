@@ -30,4 +30,9 @@ public class Author {
     public String getFullName() {
         return firstName + " " + lastName;
     }
+
+    @Getter
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Book books;
+
 }

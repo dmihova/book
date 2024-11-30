@@ -1,12 +1,12 @@
 package com.tinqin.academy.library.persistence.models;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -17,20 +17,16 @@ import java.util.UUID;
 @Setter
 
 @Entity
-@Table(name="books")
+@Table(name = "books")
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name="id",nullable=false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Column(name = "title", nullable = false)
     private String title;
-
-    @ManyToOne
-    @JoinColumn(name = "author_id")
-    private Author author;
 
     @Column(name = "pages", nullable = false)
     private String pages;
@@ -48,12 +44,19 @@ public class Book {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_on" )
+    @Column(name = "updated_on")
     private LocalDateTime updatedOn;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
+    @ManyToMany(fetch = FetchType.EAGER )
+    @JoinTable(
+            name = "book_authors",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    private List<Author> authors;
 
 
 //    @ManyToMany
@@ -62,11 +65,6 @@ public class Book {
 //             joinColumns = @JoinColumn (name ="book_id"),
 //             inverseJoinColumns = @JoinColumn(name="category_id"))
 //    private List<Category> categories;
-
-
-
-
-
 
 
 }

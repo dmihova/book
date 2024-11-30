@@ -15,12 +15,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 
-//@Component
+@Component
 @RequiredArgsConstructor
 public class BookSeederRepository implements ApplicationRunner {
 
@@ -30,9 +28,8 @@ public class BookSeederRepository implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         //book by book with book repository save all
-        //if sql ->jdbc template with entity manager +read from file sql
+           //only if table is empty
 
-        //only if table is empty
         if (bookRepository.count() > 0) {
             return;
         }
@@ -45,12 +42,12 @@ public class BookSeederRepository implements ApplicationRunner {
                 .stream()
                 .filter(textLine -> !textLine.isBlank())
                 .map(textLine -> textLine.split(";"))
-                .filter(bookArray ->  bookArray.length>=5)
+                .filter(bookArray -> bookArray.length >= 5)
                 .filter(bookArray -> !bookArray[5].trim().equals("Title"))
                 .map(bookArray -> Book
                         .builder()
                         .title(bookArray[5].trim())
-                        .author(getDBAuthor(bookArray[1].trim()))
+                        .authors(getDBAuthorList(bookArray[1].trim(), bookArray[2].trim()))
                         .pages(String.valueOf(rand.nextInt(50, 1000)))
                         .price(BigDecimal.valueOf(rand.nextInt(5, 50)))
                         .pricePerRental(BigDecimal.valueOf(rand.nextInt(1, 5)))
@@ -59,15 +56,23 @@ public class BookSeederRepository implements ApplicationRunner {
                         .isDeleted(false)
                         .build())
                 .filter(bookEntity -> {
-                    Author author = bookEntity.getAuthor();
-                    return author != null;
+                    List<Author> authorList = bookEntity.getAuthors();
+                    return !authorList.isEmpty();
                 })
                 .toList();
 
-
         bookRepository.saveAll(newBooks);
 
+    }
 
+    private List<Author> getDBAuthorList(String authorNames1, String authorNames2) {
+        Author author = getDBAuthor(authorNames1);
+        List<Author> authorList = new ArrayList<>(List.of(author));
+        if (!authorNames2.isEmpty()) {
+            Author author2 = getDBAuthor(authorNames2);
+            authorList.add(author2);
+        }
+        return authorList;
     }
 
     private Author getDBAuthor(String authorName) {
@@ -82,10 +87,10 @@ public class BookSeederRepository implements ApplicationRunner {
         String firstName = "N/A";
         if (authorNames.length > 1) {
             StringBuilder sb = new StringBuilder(authorNames[0]);
-            for (int i = 1; i < authorNames.length-1; i++) {
+            for (int i = 1; i < authorNames.length - 1; i++) {
                 sb.append(" ").append(authorNames[i]);
             }
-            firstName= sb.toString();
+            firstName = sb.toString();
         }
 
         Optional<Author> optionalAuthor = authorRepository
@@ -93,7 +98,7 @@ public class BookSeederRepository implements ApplicationRunner {
         if (optionalAuthor.isPresent()) {
             return optionalAuthor.get();
         }
-        Author newAuthor =  Author
+        Author newAuthor = Author
                 .builder()
                 .lastName(lastName)
                 .firstName(firstName)

@@ -20,12 +20,13 @@
     </properties>
 
     <modules>
-        <module>api</module>
         <module>core</module>
+        <module>api</module>
         <module>domain</module>
         <module>persistence</module>
         <module>rest</module>
     </modules>
+
 
     <dependencies>
         <dependency>

@@ -39,10 +39,19 @@ public class GetBookOperation implements GetBook {
 
     private GetBookResult convertBookToGetBookOutput(Book book) {
         return GetBookResult.builder()
-                .author(String.valueOf(book.getAuthor()))
                 .title(book.getTitle())
                 .pages(book.getPages())
-                .build();
+                .build()
+                .buildAuthors(
+                        book.getAuthors()
+                                .stream()
+                                .map(author->new String[]{
+                                        author.getId().toString(),
+                                        author.getFirstName(),
+                                        author.getLastName()})
+                                .toList())
+
+                ;
     }
 
 

@@ -11,16 +11,15 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.util.List;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 @Order(2)
-public class BookSeeederDBConnection implements ApplicationRunner {
+public class BookSeederDBConnection implements ApplicationRunner {
 
     @Value("${spring.datasource.url}")
     private String jdbcUrl;
@@ -32,7 +31,7 @@ public class BookSeeederDBConnection implements ApplicationRunner {
     private String postgresPassword;
 
     String BOOKS_QUERY = """
-            INSERT INTO books (id, created_at, is_deleted, pages, price, stock, title,price_per_rental, author_id)
+            INSERT INTO books (id, created_at, is_deleted, pages, price, stock, title,price_per_rental )
             VALUES (gen_random_uuid(),
                     now(),
                     false,
@@ -40,11 +39,7 @@ public class BookSeeederDBConnection implements ApplicationRunner {
                     ?,
                     0,
                     ?,
-                    0,
-                    (SELECT id
-                     FROM authors
-                     WHERE first_name = ?
-                        AND last_name = ?))
+                    0 )
             """;
 
 
@@ -61,8 +56,6 @@ public class BookSeeederDBConnection implements ApplicationRunner {
                 ps.setInt(1, book.getPages());
                 ps.setDouble(2, book.getPrice());
                 ps.setString(3, book.getTitle());
-                ps.setString(4, book.getAuthorFirstName());
-                ps.setString(5, book.getAuthorLastName());
 
                 ps.addBatch();
                 ps.clearParameters();
