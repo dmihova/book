@@ -1,0 +1,65 @@
+[
+  {
+    "title": "Pod igoto",
+    "pages": 300,
+    "price": 16.90,
+    "authorFirstName": "Ivan",
+    "authorLastName": "Vazov"
+  },
+  {
+    "title": "Nova zemya",
+    "pages": 500,
+    "price": 20.00,
+    "authorFirstName": "Ivan",
+    "authorLastName": "Vazov"
+  },
+  {
+    "title": "Mitrofan i Dormidolski",
+    "pages": 200,
+    "price": 10.00,
+    "authorFirstName": "Ivan",
+    "authorLastName": "Vazov"
+  },
+  {
+    "title": "Nemili-nedragi",
+    "pages": 400,
+    "price": 25.00,
+    "authorFirstName": "Ivan",
+    "authorLastName": "Vazov"
+  },
+  {
+    "title": "Chichovtsi",
+    "pages": 300,
+    "price": 15.00,
+    "authorFirstName": "Ivan",
+    "authorLastName": "Vazov"
+  },
+  {
+    "title": "Nora",
+    "pages": 150,
+    "price": 12.50,
+    "authorFirstName": "Ivan",
+    "authorLastName": "Vazov"
+  },
+  {
+    "title": "Neotdavna",
+    "pages": 100,
+    "price": 17.00,
+    "authorFirstName": "Ivan",
+    "authorLastName": "Vazov"
+  },
+  {
+    "title": "Kardashev na lov",
+    "pages": 250,
+    "price": 18.00,
+    "authorFirstName": "Ivan",
+    "authorLastName": "Vazov"
+  },
+  {
+    "title": "Ivan-Aleksandar",
+    "pages": 150,
+    "price": 15.00,
+    "authorFirstName": "Ivan",
+    "authorLastName": "Vazov"
+  }
+]

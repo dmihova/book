@@ -1,4 +1,4 @@
-package com.tinqin.academy.library.persistence.seeders.v1csv;
+package com.tinqin.academy.library.persistence.seeders.v3json;
 
 
 import com.tinqin.academy.library.persistence.filereaderfactory.FileReaderFactory;
@@ -11,16 +11,15 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.util.List;
 
-//@Component
+@Component
 @RequiredArgsConstructor
 @Order(2)
-public class BookCsvV1SeederDBConnection implements ApplicationRunner {
+public class BookJsonV3SeederDBConnection implements ApplicationRunner {
     private final FileReaderFactory fileReaderFactory;
     @Value("${spring.datasource.url}")
     private String jdbcUrl;
@@ -64,7 +63,7 @@ public class BookCsvV1SeederDBConnection implements ApplicationRunner {
         Connection connection = DriverManager.getConnection(jdbcUrl, postgresUsername, postgresPassword);
         PreparedStatement psBooks = connection.prepareStatement(BOOKS_QUERY);
         PreparedStatement psBookAuthors = connection.prepareStatement(BOOKAUTHOR_QUERY);
-        FileReader fileReader = fileReaderFactory.createCsvFileReader("files/v1csv/books.csv", 20);
+        FileReader fileReader = fileReaderFactory.createJsonFileReader("files/v3json/books.json", 20);
 
         List<BookSeederModel> batch = fileReader.getBatch();
 
