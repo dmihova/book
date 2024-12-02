@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class BookCsvV2SeederRepository implements ApplicationRunner {
 
@@ -33,7 +33,7 @@ public class BookCsvV2SeederRepository implements ApplicationRunner {
             return;
         }
 
-        String fileWithPath = "rest/src/main/resources/files/v2/books_2.csv";
+        String fileWithPath = "rest/src/main/resources/files/v2csv/books_2.csv";
       //  String currentRelativePath = Paths.get("").toAbsolutePath().toString();
         Random rand = new Random();
 

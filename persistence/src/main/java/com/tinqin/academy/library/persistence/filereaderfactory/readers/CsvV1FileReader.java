@@ -1,5 +1,7 @@
-package com.tinqin.academy.library.persistence.filereader;
+package com.tinqin.academy.library.persistence.filereaderfactory.readers;
 
+import com.tinqin.academy.library.persistence.filereaderfactory.base.FileReader;
+import com.tinqin.academy.library.persistence.filereaderfactory.models.BookSeederModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 
@@ -12,28 +14,27 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Slf4j
-public class FileReaderCsvV1 {
+public class CsvV1FileReader implements FileReader {
     private final Integer batchSize;
     private final BufferedReader reader;
 
-    private FileReaderCsvV1(Integer batchSize, BufferedReader reader) {
+    public CsvV1FileReader(String path, Integer batchSize) {
         this.batchSize = batchSize;
-        this.reader = reader;
+        this.reader = initReader(path, batchSize);
     }
 
-    public static FileReaderCsvV1 loadFile(String path, Integer batchSize) {
+    private BufferedReader initReader(String path, Integer batchSize) {
         try {
             InputStream pathResource = new ClassPathResource(path).getInputStream();
             InputStreamReader inputStreamReader = new InputStreamReader(pathResource);
-            BufferedReader reader = new BufferedReader(inputStreamReader);
-
-            return new FileReaderCsvV1(batchSize, reader);
+            return new BufferedReader(inputStreamReader);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public List<BookSeederModelV1> getBatch() {
+    @Override
+    public List<BookSeederModel> getBatch() {
 
         return IntStream
                 .range(0, batchSize)
@@ -52,7 +53,7 @@ public class FileReaderCsvV1 {
         }
     }
 
-    private Optional<BookSeederModelV1> parseLine(String line) {
+    private Optional<BookSeederModel> parseLine(String line) {
 
         if (line == null || line.isBlank()) {
             return Optional.empty();
@@ -65,7 +66,7 @@ public class FileReaderCsvV1 {
             return Optional.empty();
         }
 
-        return Optional.of(BookSeederModelV1
+        return Optional.of(BookSeederModel
                 .builder()
                 .title(parts[0])
                 .pages(Integer.parseInt(parts[1]))
@@ -75,6 +76,4 @@ public class FileReaderCsvV1 {
                 .build()
         );
     }
-
-
 }
