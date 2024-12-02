@@ -5,7 +5,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +13,7 @@ import java.util.stream.Collectors;
 //@Component
 @RequiredArgsConstructor
 @Order(1)
-public class AuthorSeederJdbcTemplate implements ApplicationRunner {
+public class AuthorLocalSeederJdbcTemplate implements ApplicationRunner {
     private final JdbcTemplate jdbcTemplate;
     private final String INSERT_AUTHOR_QUERY_TEMPLATE = """
             INSERT INTO authors (id, first_name, last_name)

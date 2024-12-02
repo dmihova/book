@@ -18,19 +18,23 @@ public class GetBookResult implements ProcessorResult {
     private String pages;
 
 
-    public GetBookResult buildAuthors( List<String[]> authorList ) {
-        authors = authorList
-                .stream()
-                .map(a-> new GetBookAuthor(a[0], a[1], a[2]))
-                .toList();
-        return this;
-    }
 
-
-    static class GetBookAuthor {
+    public static class GetBookAuthor {
         private final String authorId;
         private final String firstName;
         private final String lastName;
+
+        public String getAuthorId() {
+            return authorId;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
 
         public GetBookAuthor(String authorId, String firstName, String lastName) {
             this.authorId = authorId;

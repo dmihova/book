@@ -1,0 +1,91 @@
+package com.tinqin.academy.library.persistence.seeders.v1csv;
+
+
+import com.tinqin.academy.library.persistence.filereader.BookSeederModelV1;
+import com.tinqin.academy.library.persistence.filereader.FileReaderCsvV1;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.util.List;
+
+//@Component
+@RequiredArgsConstructor
+@Order(2)
+public class BookCsvV1SeederDBConnection implements ApplicationRunner {
+
+    @Value("${spring.datasource.url}")
+    private String jdbcUrl;
+
+    @Value("${spring.datasource.username}")
+    private String postgresUsername;
+
+    @Value("${spring.datasource.password}")
+    private String postgresPassword;
+
+    String BOOKS_QUERY = """
+            INSERT INTO books (id, created_at, is_deleted, pages, price, stock, title,price_per_rental )
+            VALUES (gen_random_uuid(),
+                    now(),
+                    false,
+                    ?,
+                    ?,
+                    0,
+                    ?,
+                    0 )
+            """;
+
+
+    String BOOKAUTHOR_QUERY = """
+            INSERT INTO book_authors (book_id, author_id)
+            VALUES (
+                    (SELECT id
+                     FROM books
+                     WHERE title = ?
+                        ),
+                    (SELECT id
+                     FROM authors
+                     WHERE first_name = ?
+                        AND last_name = ?)
+                    )
+            """;
+
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        Connection connection = DriverManager.getConnection(jdbcUrl, postgresUsername, postgresPassword);
+        PreparedStatement psBooks = connection.prepareStatement(BOOKS_QUERY);
+        PreparedStatement psBookAuthors = connection.prepareStatement(BOOKAUTHOR_QUERY);
+        FileReaderCsvV1 fileReaderCsvV1 = FileReaderCsvV1.loadFile("files/v1/books.csv", 20);
+        List<BookSeederModelV1> batch = fileReaderCsvV1.getBatch();
+
+        while (!batch.isEmpty()) {
+
+            for (BookSeederModelV1 book : batch) {
+                psBooks.setInt(1, book.getPages());
+                psBooks.setDouble(2, book.getPrice());
+                psBooks.setString(3, book.getTitle());
+                psBooks.addBatch();
+                psBooks.clearParameters();
+
+                psBookAuthors.setString(1,book.getTitle());
+                psBookAuthors.setString(2,book.getAuthorFirstName());
+                psBookAuthors.setString(3,book.getAuthorLastName());
+                psBookAuthors.addBatch();
+                psBookAuthors.clearParameters();
+            }
+
+            psBooks.executeBatch();
+            psBookAuthors.executeBatch();
+            batch = fileReaderCsvV1.getBatch();
+        }
+    }
+}
+
