@@ -41,17 +41,17 @@ public class GetBookOperation implements GetBook {
         return GetBookResult.builder()
                 .title(book.getTitle())
                 .pages(book.getPages())
-                .build()
-                .buildAuthors(
+                .authors(
                         book.getAuthors()
                                 .stream()
-                                .map(author->new String[]{
+                                .map(author->new GetBookResult.GetBookAuthor(
                                         author.getId().toString(),
                                         author.getFirstName(),
-                                        author.getLastName()})
-                                .toList())
+                                        author.getLastName()))
+                                .toList()
+                )
+                .build();
 
-                ;
     }
 
 

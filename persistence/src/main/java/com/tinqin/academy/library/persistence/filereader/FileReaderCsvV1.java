@@ -12,28 +12,28 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Slf4j
-public class FileReader {
+public class FileReaderCsvV1 {
     private final Integer batchSize;
     private final BufferedReader reader;
 
-    private FileReader(Integer batchSize, BufferedReader reader) {
+    private FileReaderCsvV1(Integer batchSize, BufferedReader reader) {
         this.batchSize = batchSize;
         this.reader = reader;
     }
 
-    public static FileReader loadFile(String path, Integer batchSize) {
+    public static FileReaderCsvV1 loadFile(String path, Integer batchSize) {
         try {
             InputStream pathResource = new ClassPathResource(path).getInputStream();
             InputStreamReader inputStreamReader = new InputStreamReader(pathResource);
             BufferedReader reader = new BufferedReader(inputStreamReader);
 
-            return new FileReader(batchSize, reader);
+            return new FileReaderCsvV1(batchSize, reader);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public List<BookSeederModel> getBatch() {
+    public List<BookSeederModelV1> getBatch() {
 
         return IntStream
                 .range(0, batchSize)
@@ -52,7 +52,7 @@ public class FileReader {
         }
     }
 
-    private Optional<BookSeederModel> parseLine(String line) {
+    private Optional<BookSeederModelV1> parseLine(String line) {
 
         if (line == null || line.isBlank()) {
             return Optional.empty();
@@ -65,7 +65,7 @@ public class FileReader {
             return Optional.empty();
         }
 
-        return Optional.of(BookSeederModel
+        return Optional.of(BookSeederModelV1
                 .builder()
                 .title(parts[0])
                 .pages(Integer.parseInt(parts[1]))

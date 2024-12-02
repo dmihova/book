@@ -3,6 +3,7 @@ package com.tinqin.academy.library.persistence.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -31,8 +32,13 @@ public class Author {
         return firstName + " " + lastName;
     }
 
-    @Getter
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Book books;
+    @ManyToMany(fetch = FetchType.LAZY )
+    @JoinTable(
+            name = "book_authors",
+            joinColumns = @JoinColumn(name = "author_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
+    @ToString.Exclude
+    private List<Book> books;
 
 }

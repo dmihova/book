@@ -1,4 +1,4 @@
-package com.tinqin.academy.library.persistence.seeders;
+package com.tinqin.academy.library.persistence.seeders.v2csv;
 
 import com.tinqin.academy.library.persistence.models.Author;
 import com.tinqin.academy.library.persistence.models.Book;
@@ -13,14 +13,13 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.*;
 
 
 @Component
 @RequiredArgsConstructor
-public class BookSeederRepository implements ApplicationRunner {
+public class BookCsvV2SeederRepository implements ApplicationRunner {
 
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
@@ -34,8 +33,8 @@ public class BookSeederRepository implements ApplicationRunner {
             return;
         }
 
-        String fileWithPath = "rest/src/main/resources/files/books_2.csv";
-        String currentRelativePath = Paths.get("").toAbsolutePath().toString();
+        String fileWithPath = "rest/src/main/resources/files/v2/books_2.csv";
+      //  String currentRelativePath = Paths.get("").toAbsolutePath().toString();
         Random rand = new Random();
 
         List<Book> newBooks = Files.readAllLines(Path.of(fileWithPath))

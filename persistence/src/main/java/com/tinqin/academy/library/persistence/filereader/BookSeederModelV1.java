@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Builder
 @Getter
-public class BookSeederModel {
+public class BookSeederModelV1 {
     private final String title;
     private final Integer pages;
     private final Double price;
