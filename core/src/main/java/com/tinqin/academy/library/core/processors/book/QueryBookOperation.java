@@ -2,25 +2,20 @@ package com.tinqin.academy.library.core.processors.book;
 
 
 import com.tinqin.academy.library.api.errors.OperationError;
-import com.tinqin.academy.library.api.models.book.BookModel;
-import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthorInput;
-import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthorResult;
-import com.tinqin.academy.library.api.operations.querybook.QueryBook;
-import com.tinqin.academy.library.api.operations.querybook.QueryBookInput;
-import com.tinqin.academy.library.api.operations.querybook.QueryBookResult;
+import com.tinqin.academy.library.api.models.book.BookWithAuthorsModel;
+import com.tinqin.academy.library.api.operations.book.querybook.QueryBook;
+import com.tinqin.academy.library.api.operations.book.querybook.QueryBookInput;
+import com.tinqin.academy.library.api.operations.book.querybook.QueryBookResult;
 import com.tinqin.academy.library.core.errorhandler.base.ErrorHandler;
 import com.tinqin.academy.library.core.errorhandler.exceptions.BusinessException;
-import com.tinqin.academy.library.core.queryfactory.BookQueryFactory;
 import com.tinqin.academy.library.persistence.models.Author;
 import com.tinqin.academy.library.persistence.models.Book;
 import com.tinqin.academy.library.persistence.repositories.AuthorRepository;
 import com.tinqin.academy.library.persistence.repositories.BookRepository;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
-import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -46,7 +41,7 @@ public class QueryBookOperation implements QueryBook {
     }
 
 
-    private Try<QueryBookResult> convertToQueryBookOutput(List<BookModel> bookModels) {
+    private Try<QueryBookResult> convertToQueryBookOutput(List<BookWithAuthorsModel> bookModels) {
         return Try.of(() -> QueryBookResult.builder()
                 .bookModelList(bookModels)
                 .build());
@@ -57,10 +52,10 @@ public class QueryBookOperation implements QueryBook {
                 .orElseThrow(() -> new BusinessException(AUTHOR_NOT_FOUND)));
     }
 
-    private Try<List<BookModel>> getBooks(QueryBookInput input) {
+    private Try<List<BookWithAuthorsModel>> getBooks(QueryBookInput input) {
         return Try.of(() -> getBooksByParameter(input)
                 .stream()
-                .map(book -> conversionService.convert(book, BookModel.class))
+                .map(book -> conversionService.convert(book, BookWithAuthorsModel.class))
                 .toList());
     }
 

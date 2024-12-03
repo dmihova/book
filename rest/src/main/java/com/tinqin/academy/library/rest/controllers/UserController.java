@@ -2,9 +2,9 @@ package com.tinqin.academy.library.rest.controllers;
 
 import com.tinqin.academy.library.api.APIRoutes;
 import com.tinqin.academy.library.api.errors.OperationError;
-import com.tinqin.academy.library.api.operations.blockuser.BlockUser;
-import com.tinqin.academy.library.api.operations.blockuser.BlockUserInput;
-import com.tinqin.academy.library.api.operations.blockuser.BlockUserResult;
+import com.tinqin.academy.library.api.operations.user.blockuser.BlockUser;
+import com.tinqin.academy.library.api.operations.user.blockuser.BlockUserInput;
+import com.tinqin.academy.library.api.operations.user.blockuser.BlockUserResult;
 import com.tinqin.academy.library.rest.controllers.base.BaseController;
 import io.vavr.control.Either;
 import lombok.RequiredArgsConstructor;

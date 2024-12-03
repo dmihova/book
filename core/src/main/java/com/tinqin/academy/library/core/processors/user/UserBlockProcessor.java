@@ -1,16 +1,12 @@
 package com.tinqin.academy.library.core.processors.user;
 
 import com.tinqin.academy.library.api.errors.OperationError;
-import com.tinqin.academy.library.api.operations.blockuser.BlockUser;
-import com.tinqin.academy.library.api.operations.blockuser.BlockUserInput;
-import com.tinqin.academy.library.api.operations.blockuser.BlockUserResult;
-import com.tinqin.academy.library.api.operations.getbook.GetBookInput;
+import com.tinqin.academy.library.api.operations.user.blockuser.BlockUser;
+import com.tinqin.academy.library.api.operations.user.blockuser.BlockUserInput;
+import com.tinqin.academy.library.api.operations.user.blockuser.BlockUserResult;
 import com.tinqin.academy.library.core.errorhandler.base.ErrorHandler;
-import com.tinqin.academy.library.persistence.models.Author;
-import com.tinqin.academy.library.persistence.models.Book;
 import com.tinqin.academy.library.persistence.models.User;
 import com.tinqin.academy.library.persistence.repositories.UserRepository;
-import io.vavr.CheckedFunction0;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;

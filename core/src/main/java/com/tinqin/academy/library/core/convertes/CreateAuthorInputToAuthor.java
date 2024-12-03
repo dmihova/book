@@ -1,7 +1,7 @@
 package com.tinqin.academy.library.core.convertes;
 
 
-import com.tinqin.academy.library.api.operations.createauthor.CreateAuthorInput;
+import com.tinqin.academy.library.api.operations.author.createauthor.CreateAuthorInput;
 import com.tinqin.academy.library.persistence.models.Author;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;

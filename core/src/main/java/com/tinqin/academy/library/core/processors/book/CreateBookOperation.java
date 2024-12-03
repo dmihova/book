@@ -1,9 +1,9 @@
 package com.tinqin.academy.library.core.processors.book;
 
 import com.tinqin.academy.library.api.errors.OperationError;
-import com.tinqin.academy.library.api.operations.createbook.CreateBook;
-import com.tinqin.academy.library.api.operations.createbook.CreateBookInput;
-import com.tinqin.academy.library.api.operations.createbook.CreateBookResult;
+import com.tinqin.academy.library.api.operations.book.createbook.CreateBook;
+import com.tinqin.academy.library.api.operations.book.createbook.CreateBookInput;
+import com.tinqin.academy.library.api.operations.book.createbook.CreateBookResult;
 import com.tinqin.academy.library.core.errorhandler.base.ErrorHandler;
 import com.tinqin.academy.library.core.errorhandler.exceptions.BusinessException;
 import com.tinqin.academy.library.persistence.models.Author;

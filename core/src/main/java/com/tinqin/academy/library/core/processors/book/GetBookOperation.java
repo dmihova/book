@@ -1,9 +1,9 @@
 package com.tinqin.academy.library.core.processors.book;
 
 import com.tinqin.academy.library.api.errors.OperationError;
-import com.tinqin.academy.library.api.operations.getbook.GetBook;
-import com.tinqin.academy.library.api.operations.getbook.GetBookInput;
-import com.tinqin.academy.library.api.operations.getbook.GetBookResult;
+import com.tinqin.academy.library.api.operations.book.getbook.GetBook;
+import com.tinqin.academy.library.api.operations.book.getbook.GetBookInput;
+import com.tinqin.academy.library.api.operations.book.getbook.GetBookResult;
 import com.tinqin.academy.library.core.errorhandler.base.ErrorHandler;
 import com.tinqin.academy.library.persistence.models.Book;
 import com.tinqin.academy.library.persistence.repositories.BookRepository;
@@ -41,10 +41,13 @@ public class GetBookOperation implements GetBook {
         return GetBookResult.builder()
                 .title(book.getTitle())
                 .pages(book.getPages())
+                .createdAt(book.getCreatedAt())
+                .price(book.getPrice())
+                .stock(book.getStock())
                 .authors(
                         book.getAuthors()
                                 .stream()
-                                .map(author->new GetBookResult.GetBookAuthor(
+                                .map(author -> new GetBookResult.GetBookAuthor(
                                         author.getId().toString(),
                                         author.getFirstName(),
                                         author.getLastName()))
@@ -53,6 +56,4 @@ public class GetBookOperation implements GetBook {
                 .build();
 
     }
-
-
 }

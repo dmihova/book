@@ -14,11 +14,12 @@ import org.springframework.stereotype.Component;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 @Order(1)
 public class AuthorJsonV3SeederDBConnection implements ApplicationRunner {
@@ -42,6 +43,16 @@ public class AuthorJsonV3SeederDBConnection implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         Connection connection = DriverManager.getConnection(jdbcUrl, postgresUsername, postgresPassword);
+
+        ResultSet resultSet = connection
+                .prepareStatement("SELECT COUNT(*) FROM authors")
+                .executeQuery();
+        resultSet.next();
+        int authorCount = resultSet.getInt(1);
+        if (authorCount > 0) {
+            return;
+        }
+
         PreparedStatement psAuthor = connection.prepareStatement(AUTHORS_QUERY);
 
         FileReader fileReader = fileReaderFactory.createJsonFileReader("files/v3json/books.json", 20);
