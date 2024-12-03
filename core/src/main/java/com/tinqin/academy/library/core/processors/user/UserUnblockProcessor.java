@@ -1,9 +1,9 @@
 package com.tinqin.academy.library.core.processors.user;
 
 import com.tinqin.academy.library.api.errors.OperationError;
-import com.tinqin.academy.library.api.operations.user.blockuser.BlockUser;
-import com.tinqin.academy.library.api.operations.user.blockuser.BlockUserInput;
-import com.tinqin.academy.library.api.operations.user.blockuser.BlockUsrResult;
+import com.tinqin.academy.library.api.operations.user.unblockuser.UnblockUser;
+import com.tinqin.academy.library.api.operations.user.unblockuser.UnblockUserInput;
+import com.tinqin.academy.library.api.operations.user.unblockuser.UnblockUserResult;
 import com.tinqin.academy.library.core.errorhandler.base.ErrorHandler;
 import com.tinqin.academy.library.core.errorhandler.exceptions.BusinessException;
 import com.tinqin.academy.library.persistence.models.User;
@@ -11,26 +11,27 @@ import com.tinqin.academy.library.persistence.repositories.UserRepository;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 import static com.tinqin.academy.library.api.ValidationMessages.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserBlockProcessor implements BlockUser {
+public class UserUnblockProcessor implements UnblockUser {
 
     private final UserRepository userRepository;
     private final ErrorHandler errorHandler;
 
 
     @Override
-    public Either<OperationError, BlockUsrResult> process(BlockUserInput input) {
+    public Either<OperationError, UnblockUserResult> process(UnblockUserInput input) {
         return fetchUser(UUID.fromString(input.getId()))
-                .flatMap(this::validateAdmin)
-                .flatMap(this::validateUnblockedUser)
-                .flatMap(this::blockUserAndSave)
+                .flatMap(this::isBlockedUser)
+                .flatMap(this::unblockUser)
                 .map(this::convertUserToBlockUserOutput)
                 .toEither()
                 .mapLeft(errorHandler::handle);
@@ -41,30 +42,28 @@ public class UserBlockProcessor implements BlockUser {
                 .orElseThrow(() -> new BusinessException(USER_IS_NOT_FOUND)));
     }
 
-    private Try<User> validateAdmin(User userEntity) {
-        return !userEntity.isAdmin() ?
-                Try.success(userEntity) :
-                Try.failure(new BusinessException(USER_IS_ADMIN));
+    private Try<User> isBlockedUser(User user) {
+        return user.isBlocked() ?
+                Try.success(user) :
+                Try.failure(new BusinessException(USER_IS_NOT_BLOCKED));
     }
 
-    private Try<User> validateUnblockedUser(User userEntity) {
-        return !userEntity.isBlocked() ?
-                Try.success(userEntity) :
-                Try.failure(new BusinessException(USER_IS_ALREADY_BLOCK));
-    }
 
-    private Try<User> blockUserAndSave(User userToBlock) {
+    private Try<User> unblockUser(User userToUnblock) {
         return Try.of(() -> {
-            userToBlock.setBlocked(true);
-            return userRepository.save(userToBlock);
+            userToUnblock.setBlocked(false);
+            userRepository.save(userToUnblock);
+            return userToUnblock;
         });
     }
 
-    private BlockUsrResult convertUserToBlockUserOutput(User user) {
-        return BlockUsrResult
+    private UnblockUserResult convertUserToBlockUserOutput(User userEntity) {
+        return UnblockUserResult
                 .builder()
-                .id(user.getId().toString())
+                .id(userEntity.getId().toString())
                 .build();
 
     }
+
+
 }

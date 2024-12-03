@@ -15,8 +15,9 @@ public class BaseController {
     protected <O extends ProcessorResult> ResponseEntity<?> mapToResponseEntity(
             Either<OperationError, O> either, HttpStatus httpStatus) {
 
-        return either.isRight() ? new ResponseEntity((ProcessorResult) either.get(), httpStatus)
-                : new ResponseEntity(((OperationError) either.getLeft()).getStatus(), httpStatus);
+        return either.isRight()
+                ? new ResponseEntity((ProcessorResult) either.get(), httpStatus)
+                : new ResponseEntity(((OperationError) either.getLeft()).getMessage(), httpStatus);
     }
 
 }
