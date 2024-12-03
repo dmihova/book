@@ -43,8 +43,6 @@ public class GetBooksByAuthorOperation implements GetBooksByAuthor {
                             List<Book> pagedBooks = bookRepository
                                     .findByAuthors(List.of( author), input.getPageable());
 
-                    PageRequest a = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("title")));
-
                             List<BookModel> bookModels = pagedBooks
                                     .stream()
                                     .map(bookEntity -> conversionService.convert(bookEntity, BookModel.class))
