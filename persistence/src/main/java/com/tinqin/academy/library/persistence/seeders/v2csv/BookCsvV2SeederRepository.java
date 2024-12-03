@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 
-//@Component
+@Component
 @RequiredArgsConstructor
 public class BookCsvV2SeederRepository implements ApplicationRunner {
 
@@ -27,14 +27,14 @@ public class BookCsvV2SeederRepository implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         //book by book with book repository save all
-           //only if table is empty
+        //only if table is empty
 
         if (bookRepository.count() > 0) {
             return;
         }
 
         String fileWithPath = "rest/src/main/resources/files/v2csv/books_2.csv";
-      //  String currentRelativePath = Paths.get("").toAbsolutePath().toString();
+        //  String currentRelativePath = Paths.get("").toAbsolutePath().toString();
         Random rand = new Random();
 
         List<Book> newBooks = Files.readAllLines(Path.of(fileWithPath))
@@ -50,7 +50,7 @@ public class BookCsvV2SeederRepository implements ApplicationRunner {
                         .pages(String.valueOf(rand.nextInt(50, 1000)))
                         .price(BigDecimal.valueOf(rand.nextInt(5, 50)))
                         .pricePerRental(BigDecimal.valueOf(rand.nextInt(1, 5)))
-                        .stock(rand.nextInt(1, 10))
+                        .stock(rand.nextInt(5, 10))
                         .createdAt(LocalDateTime.now())
                         .isDeleted(false)
                         .build())

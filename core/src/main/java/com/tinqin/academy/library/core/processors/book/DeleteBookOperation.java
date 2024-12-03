@@ -2,9 +2,9 @@ package com.tinqin.academy.library.core.processors.book;
 
 
 import com.tinqin.academy.library.api.errors.OperationError;
-import com.tinqin.academy.library.api.operations.deletebook.DeleteBook;
-import com.tinqin.academy.library.api.operations.deletebook.DeleteBookInput;
-import com.tinqin.academy.library.api.operations.deletebook.DeleteBookResult;
+import com.tinqin.academy.library.api.operations.book.deletebook.DeleteBook;
+import com.tinqin.academy.library.api.operations.book.deletebook.DeleteBookInput;
+import com.tinqin.academy.library.api.operations.book.deletebook.DeleteBookResult;
 import com.tinqin.academy.library.core.errorhandler.base.ErrorHandler;
 import com.tinqin.academy.library.core.errorhandler.exceptions.BusinessException;
 import com.tinqin.academy.library.persistence.models.Book;

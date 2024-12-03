@@ -1,20 +1,23 @@
-package com.tinqin.academy.library.api.models.book;
+package com.tinqin.academy.library.api.operations.book.getbook;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tinqin.academy.library.api.base.ProcessorResult;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.List;
 
+@Getter
 @AllArgsConstructor
 @Builder
-@Getter
-public class BookModel {
-    private UUID id;
+@NoArgsConstructor
+public class GetBookResult implements ProcessorResult {
+
+    private List<GetBookAuthor> authors;
     private String title;
     private String pages;
     private BigDecimal price;
@@ -22,4 +25,6 @@ public class BookModel {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
+     public record GetBookAuthor(String authorId, String firstName, String lastName) {
+    }
 }

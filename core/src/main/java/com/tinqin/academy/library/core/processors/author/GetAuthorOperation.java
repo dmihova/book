@@ -1,9 +1,9 @@
 package com.tinqin.academy.library.core.processors.author;
 
 import com.tinqin.academy.library.api.errors.OperationError;
-import com.tinqin.academy.library.api.operations.getauthor.GetAuthor;
-import com.tinqin.academy.library.api.operations.getauthor.GetAuthorInput;
-import com.tinqin.academy.library.api.operations.getauthor.GetAuthorResult;
+import com.tinqin.academy.library.api.operations.author.getauthor.GetAuthor;
+import com.tinqin.academy.library.api.operations.author.getauthor.GetAuthorInput;
+import com.tinqin.academy.library.api.operations.author.getauthor.GetAuthorResult;
 import com.tinqin.academy.library.core.errorhandler.base.ErrorHandler;
 import com.tinqin.academy.library.persistence.models.Author;
 import com.tinqin.academy.library.persistence.repositories.AuthorRepository;

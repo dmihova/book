@@ -3,9 +3,9 @@ package com.tinqin.academy.library.core.processors.author;
 
 import com.tinqin.academy.library.api.errors.OperationError;
 import com.tinqin.academy.library.api.models.author.AuthorModel;
-import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthor;
-import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthorInput;
-import com.tinqin.academy.library.api.operations.queryauthor.QueryAuthorResult;
+import com.tinqin.academy.library.api.operations.author.queryauthor.QueryAuthor;
+import com.tinqin.academy.library.api.operations.author.queryauthor.QueryAuthorInput;
+import com.tinqin.academy.library.api.operations.author.queryauthor.QueryAuthorResult;
 import com.tinqin.academy.library.core.errorhandler.base.ErrorHandler;
 import com.tinqin.academy.library.persistence.models.Author;
 import com.tinqin.academy.library.persistence.repositories.AuthorRepository;
@@ -47,11 +47,11 @@ public class QueryAuthorOperation implements QueryAuthor {
 
     private Collection<Author> getAuthorsByParameter(QueryAuthorInput input) {
         if (!input.getLastName().isBlank()&&!input.getFirstName().isBlank()) {
-            return authorRepository.findByFirstNameLikeAndLastNameLike(input.getFirstName(),input.getLastName());
+            return authorRepository.findByFirstNameLikeAndLastNameLike(input.getFirstName()+"%",input.getLastName()+"%");
         } else if (!input.getLastName().isBlank()) {
-            return authorRepository.findByLastNameLike(input.getLastName());
+            return authorRepository.findByLastNameLike(input.getLastName()+"%");
         } else if (!input.getFirstName().isBlank()) {
-            return authorRepository.findByFirstNameLike(input.getFirstName());
+            return authorRepository.findByFirstNameLike(input.getFirstName()+"%");
         }
         else {
             return authorRepository.findAll();
