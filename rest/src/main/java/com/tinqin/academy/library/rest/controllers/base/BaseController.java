@@ -17,7 +17,7 @@ public class BaseController {
 
         return either.isRight()
                 ? new ResponseEntity((ProcessorResult) either.get(), httpStatus)
-                : new ResponseEntity(((OperationError) either.getLeft()).getMessage(), httpStatus);
+                : new ResponseEntity(((OperationError) either.getLeft()), httpStatus);
     }
 
 }

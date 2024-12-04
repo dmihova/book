@@ -94,7 +94,6 @@ public class BookController extends BaseController {
         Either<OperationError, GetBooksByAuthorResult> process = getBooksByAuthor.process(input);
 
         return mapToResponseEntity(process, HttpStatus.OK);
-
     }
 
 

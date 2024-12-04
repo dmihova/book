@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.UUID;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static com.tinqin.academy.library.api.ValidationMessages.BOOK_TITLE_SIZE;
 
@@ -26,8 +27,8 @@ public class CreateBookInput implements ProcessorInput {
     @Length(min=5,max=100,message = BOOK_TITLE_SIZE)
     private String title;
 
-    @UUID
-    private String authorId;
+
+    private List<String> authorIds;
 
     @NotBlank
     private String pages;

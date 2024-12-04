@@ -16,9 +16,14 @@ import io.vavr.control.Try;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.tinqin.academy.library.api.ValidationMessages.AUTHOR_NOT_FOUND;
+import static com.tinqin.academy.library.api.ValidationMessages.USER_IS_ALREADY_BLOCK;
 
 @Service
 @RequiredArgsConstructor
@@ -30,21 +35,33 @@ public class CreateBookOperation implements CreateBook {
     private final ErrorHandler errorHandler;
 
     @Override
-    public  Either<OperationError, CreateBookResult>  process(CreateBookInput input) {
-          return getAuthor(input)
+    public Either<OperationError, CreateBookResult> process(CreateBookInput input) {
+        return getAuthors(input)
                 .flatMap(author -> createBook(input, author))
                 .flatMap(this::saveBook)
                 .toEither()
-                .mapLeft(errorHandler::handle) ;
+                .mapLeft(errorHandler::handle);
     }
 
-    private Try<Author> getAuthor(CreateBookInput input) {
-        return Try.of(() -> UUID.fromString(input.getAuthorId()))
-                .flatMap(authorId -> Try.of(() -> authorRepository.findById(authorId)
-                        .orElseThrow(() -> new BusinessException(AUTHOR_NOT_FOUND))));
+    private   Try<List<Author>> getAuthors(CreateBookInput input) {
+        int length=input.getAuthorIds().size();
+        if(length==0)
+            return Try.of(List::of);
+
+        List<Author> authors = input.getAuthorIds()
+                    .stream()
+                    .map(UUID::fromString)
+                    .map(authorRepository::findById)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .toList();
+
+        return authors.size() == length
+                    ? Try.success(authors)
+                    : Try.failure(new BusinessException(AUTHOR_NOT_FOUND));
     }
 
-    private Try<Book> createBook(CreateBookInput input, Author author) {
+    private Try<Book> createBook(CreateBookInput input, List<Author> authors) {
         return Try.of(() -> conversionService.convert(input, Book.class));
     }
 
