@@ -1,4 +1,4 @@
-package com.tinqin.academy.library.persistence.seeders.v1csv;
+package com.tinqin.academy.library.persistence.seeders.authorsandbookscsv;
 
 
 import com.tinqin.academy.library.persistence.filereaderfactory.FileReaderFactory;
@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.List;
 
 //@Component
@@ -62,6 +62,17 @@ public class BookCsvV1SeederDBConnection implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         Connection connection = DriverManager.getConnection(jdbcUrl, postgresUsername, postgresPassword);
+
+        ResultSet resultSet = connection
+                .prepareStatement("SELECT COUNT(*) FROM books")
+                .executeQuery();
+        resultSet.next();
+        int booksCount = resultSet.getInt(1);
+        if (booksCount > 0) {
+            return;
+        }
+
+
         PreparedStatement psBooks = connection.prepareStatement(BOOKS_QUERY);
         PreparedStatement psBookAuthors = connection.prepareStatement(BOOKAUTHOR_QUERY);
         FileReader fileReader = fileReaderFactory.createCsvFileReader("files/v1csv/books.csv", 20);

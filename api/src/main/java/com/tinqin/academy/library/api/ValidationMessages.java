@@ -14,5 +14,10 @@ public class ValidationMessages {
     public static final String USER_IS_ADMIN ="User is administrator";
     public static final String USER_IS_NOT_FOUND="User not found";
     public static final String USER_IS_NOT_BLOCKED="User is not blocked";
+    public static final String USER_NOT_FOUND="User not found";
+
+    public static final String SUBSCRIPTION_NOT_FOUND = "Subscription not found"            ;
+    public static final String SUBSCRIPTION_ID_CANNOT_BE_NULL="Subscription id cannot be null";
+
 
 }

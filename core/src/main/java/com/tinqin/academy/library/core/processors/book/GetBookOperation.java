@@ -5,6 +5,7 @@ import com.tinqin.academy.library.api.operations.book.getbook.GetBook;
 import com.tinqin.academy.library.api.operations.book.getbook.GetBookInput;
 import com.tinqin.academy.library.api.operations.book.getbook.GetBookResult;
 import com.tinqin.academy.library.core.errorhandler.base.ErrorHandler;
+import com.tinqin.academy.library.core.errorhandler.exceptions.BusinessException;
 import com.tinqin.academy.library.persistence.models.Book;
 import com.tinqin.academy.library.persistence.repositories.BookRepository;
 import io.vavr.control.Either;
@@ -34,7 +35,7 @@ public class GetBookOperation implements GetBook {
 
     private Try<Book> fetchBook(GetBookInput input) {
         return Try.of(() -> bookRepository.findById(UUID.fromString(input.getBookId()))
-                .orElseThrow(() -> new RuntimeException(BOOK_NOT_FOUND)));
+                .orElseThrow(() -> new BusinessException(BOOK_NOT_FOUND)));
     }
 
     private GetBookResult convertBookToGetBookOutput(Book book) {

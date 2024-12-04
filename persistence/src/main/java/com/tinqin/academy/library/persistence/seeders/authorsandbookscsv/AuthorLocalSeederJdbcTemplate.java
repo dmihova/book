@@ -1,4 +1,4 @@
-package com.tinqin.academy.library.persistence.seeders;
+package com.tinqin.academy.library.persistence.seeders.authorsandbookscsv;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
@@ -25,6 +25,13 @@ public class AuthorLocalSeederJdbcTemplate implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        String countQuery = "SELECT COUNT(*) FROM authors";
+        Integer count = this.jdbcTemplate.queryForObject(countQuery, Integer.class);
+        if (count!=null&&count > 0) {
+            return;
+        }
+
+
         String names = authors
                 .stream()
                 .map(author -> author.split(" "))

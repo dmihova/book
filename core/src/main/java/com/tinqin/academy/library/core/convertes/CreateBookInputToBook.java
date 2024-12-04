@@ -14,8 +14,7 @@ public class CreateBookInputToBook  implements Converter<CreateBookInput, Book >
         return Book
                 .builder()
                 .title(source.getTitle())
-             //   .author(source.getAuthor())
-                .pages(source.getPages())
+                   .pages(source.getPages())
                 .price(source.getPrice())
                 .pricePerRental(source.getPrice())
                 .stock(0)
