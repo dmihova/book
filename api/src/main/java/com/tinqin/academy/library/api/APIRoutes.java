@@ -16,6 +16,16 @@ public class APIRoutes {
     public static final String UNBLOCK_USER = API_USER + "/unblock/{userId}";
 
 
+    public static final String API_SUBSCRIPTION = API + "/subscription";
+    public static final String GET_SUBSCRIPTION = API_SUBSCRIPTION + "/{subscriptionId}";
+    public static final String DELETE_SUBSCRIPTION = API_SUBSCRIPTION + "/{subscriptionId}";
+
+
+
+
+
+
+
 
 
 }

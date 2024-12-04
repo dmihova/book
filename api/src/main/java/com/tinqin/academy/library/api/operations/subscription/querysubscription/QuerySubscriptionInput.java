@@ -1,4 +1,4 @@
-package com.tinqin.academy.library.api.operations.book.querybook;
+package com.tinqin.academy.library.api.operations.subscription.querysubscription;
 
 
 import com.tinqin.academy.library.api.base.ProcessorInput;
@@ -12,14 +12,11 @@ import org.hibernate.validator.constraints.UUID;
 @NoArgsConstructor
 @Getter
 @Builder
-public class QueryBookInput implements ProcessorInput {
-
-    private String title;
+public class QuerySubscriptionInput implements ProcessorInput {
 
     @UUID
-    private String authorId;
-    private String authorFirstName;
-    private String authorLastName;
+    private String userId;
 
+    private boolean active;
 
 }

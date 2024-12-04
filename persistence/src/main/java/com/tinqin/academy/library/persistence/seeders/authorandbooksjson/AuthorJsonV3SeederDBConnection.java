@@ -1,4 +1,4 @@
-package com.tinqin.academy.library.persistence.seeders.v1csv;
+package com.tinqin.academy.library.persistence.seeders.authorandbooksjson;
 
 
 import com.tinqin.academy.library.persistence.filereaderfactory.FileReaderFactory;
@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +21,7 @@ import java.util.Set;
 //@Component
 @RequiredArgsConstructor
 @Order(1)
-public class AuthorCsvV1SeederDBConnection implements ApplicationRunner {
+public class AuthorJsonV3SeederDBConnection implements ApplicationRunner {
     private final FileReaderFactory fileReaderFactory;
 
     @Value("${spring.datasource.url}")
@@ -42,9 +42,19 @@ public class AuthorCsvV1SeederDBConnection implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         Connection connection = DriverManager.getConnection(jdbcUrl, postgresUsername, postgresPassword);
+
+        ResultSet resultSet = connection
+                .prepareStatement("SELECT COUNT(*) FROM authors")
+                .executeQuery();
+        resultSet.next();
+        int authorCount = resultSet.getInt(1);
+        if (authorCount > 0) {
+            return;
+        }
+
         PreparedStatement psAuthor = connection.prepareStatement(AUTHORS_QUERY);
 
-        FileReader fileReader = fileReaderFactory.createCsvFileReader("files/v1csv/books.csv", 20);
+        FileReader fileReader = fileReaderFactory.createJsonFileReader("files/v3json/books.json", 20);
         List<BookSeederModel> batch = fileReader.getBatch();
 
         Set<String> authorsSet = new HashSet<>();

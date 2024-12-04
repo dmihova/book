@@ -1,4 +1,4 @@
-package com.tinqin.academy.library.persistence.seeders.v2csv;
+package com.tinqin.academy.library.persistence.seeders.authorsandbookscsv;
 
 import com.tinqin.academy.library.persistence.models.Author;
 import com.tinqin.academy.library.persistence.models.Book;
