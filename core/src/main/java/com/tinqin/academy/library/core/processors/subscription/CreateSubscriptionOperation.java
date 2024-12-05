@@ -1,10 +1,13 @@
 package com.tinqin.academy.library.core.processors.subscription;
 
 import com.tinqin.academy.library.api.errors.OperationError;
+import com.tinqin.academy.library.api.operations.rental.createrental.CreateRentalInput;
+import com.tinqin.academy.library.api.operations.rental.createrental.CreateRentalResult;
 import com.tinqin.academy.library.api.operations.subscription.createsubscription.CreateSubscription;
 import com.tinqin.academy.library.api.operations.subscription.createsubscription.CreateSubscriptionInput;
 import com.tinqin.academy.library.api.operations.subscription.createsubscription.CreateSubscriptionResult;
 import com.tinqin.academy.library.core.errorhandler.base.ErrorHandler;
+import com.tinqin.academy.library.core.errorhandler.exceptions.BusinessException;
 import com.tinqin.academy.library.persistence.models.Subscription;
 import com.tinqin.academy.library.persistence.models.User;
 import com.tinqin.academy.library.persistence.repositories.SubscriptionRepository;
@@ -12,7 +15,7 @@ import com.tinqin.academy.library.persistence.repositories.UserRepository;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.convert.ConversionService;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -40,6 +43,9 @@ public class CreateSubscriptionOperation implements CreateSubscription {
     }
 
 
+
+
+
     private Try<Subscription> createSubscription(CreateSubscriptionInput input, User userEntity) {
         return Try.of(() -> {
             Optional<Subscription> subscriptionOptional =
@@ -59,7 +65,7 @@ public class CreateSubscriptionOperation implements CreateSubscription {
 
     private Try<User> fetchUser(CreateSubscriptionInput input) {
         return Try.of(() -> userRepository.findById(UUID.fromString(input.getUserId()))
-                .orElseThrow(() -> new RuntimeException(USER_NOT_FOUND)));
+                .orElseThrow(() -> new BusinessException(USER_NOT_FOUND)));
     }
 
 
@@ -70,6 +76,7 @@ public class CreateSubscriptionOperation implements CreateSubscription {
                 .startDate(subscription.getStartDate())
                 .build());
     }
+
 
 
 }
