@@ -18,4 +18,5 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, UUID
     List<Subscription> findByUser_Id(UUID id);
 
 
+    Optional<Subscription> findByUserAndEndDateGreaterThanEqualAndCanRent(User user, LocalDate endDate, Boolean canRent);
 }

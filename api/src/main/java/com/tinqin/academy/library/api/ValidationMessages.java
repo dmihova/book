@@ -19,5 +19,6 @@ public class ValidationMessages {
     public static final String SUBSCRIPTION_NOT_FOUND = "Subscription not found"            ;
     public static final String SUBSCRIPTION_ID_CANNOT_BE_NULL="Subscription id cannot be null";
 
+    public static final String  BOOK_RENTAL_NOT_FOUND="Book rental not found";
 
 }
