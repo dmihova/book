@@ -47,7 +47,7 @@ public class RentalController extends BaseController {
     @PostMapping(APIRoutes.API_RENTAL_RENT)
     @Operation(summary = "Rent book ",
             description = "Rent a book and return UUID")
-    public ResponseEntity<?> rentABook(@Valid @RequestBody CreateRentalInput input) {
+    public ResponseEntity<?> postRental(@Valid @RequestBody CreateRentalInput input) {
 
         Either<OperationError, CreateRentalResult> process = createRental.process(input);
         return mapToResponseEntity(process, HttpStatus.CREATED);

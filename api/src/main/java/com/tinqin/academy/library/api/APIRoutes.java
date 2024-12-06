@@ -28,6 +28,11 @@ public class APIRoutes {
     public static final String API_RENTAL_RETURN = API_RENTAL + "/return";
 
 
+    public static final String API_PURCHASE = API + "/purchases";
+    public static final String GET_PURCHASE = API_PURCHASE + "/{purchaseId}";
+
+
+
 
 
 

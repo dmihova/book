@@ -8,7 +8,6 @@ import com.tinqin.academy.library.core.errorhandler.base.ErrorHandler;
 import com.tinqin.academy.library.core.errorhandler.exceptions.BusinessException;
 import com.tinqin.academy.library.persistence.models.Book;
 import com.tinqin.academy.library.persistence.models.BookRental;
-import com.tinqin.academy.library.persistence.models.Subscription;
 import com.tinqin.academy.library.persistence.models.User;
 import com.tinqin.academy.library.persistence.repositories.BookRentalRepository;
 import com.tinqin.academy.library.persistence.repositories.BookRepository;

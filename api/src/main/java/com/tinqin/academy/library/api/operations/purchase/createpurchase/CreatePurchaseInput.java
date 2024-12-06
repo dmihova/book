@@ -1,4 +1,4 @@
-package com.tinqin.academy.library.api.operations.author.createauthor;
+package com.tinqin.academy.library.api.operations.purchase.createpurchase;
 
 
 import com.tinqin.academy.library.api.base.ProcessorInput;
@@ -7,21 +7,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Builder
-public class CreateAuthorInput implements ProcessorInput {
+public class CreatePurchaseInput implements ProcessorInput {
 
     @NotBlank
-    @Length(min=1,max=100)
-    private String firstName;
+    @UUID
+    private String userId;
 
     @NotBlank
-    @Length(min=1,max=100)
-    private String lastName;
-
+    @UUID
+    private String bookId;
 
 }

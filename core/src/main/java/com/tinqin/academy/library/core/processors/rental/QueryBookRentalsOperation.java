@@ -52,7 +52,7 @@ public class QueryBookRentalsOperation implements QueryBookRental {
 
             List<BookRentalModel> bookRentalModels = entityBooks
                     .stream()
-                    .map(this::conversionService)
+                    .map(this::convertBookRentalToBookRentalModel)
                     .toList();
 
             return QueryBookRentalResult
@@ -63,7 +63,17 @@ public class QueryBookRentalsOperation implements QueryBookRental {
 
     }
 
-    private BookRentalModel conversionService(BookRental bookRental) {
-        return BookRentalModel.builder().id(bookRental.getId().toString()).userId(bookRental.getUser().getId().toString()).bookId(bookRental.getBook().getId().toString()).subscriptionId(bookRental.getSubscription().getId().toString()).startDate(bookRental.getStartDate()).endDate(bookRental.getEndDate()).build();
+    private BookRentalModel convertBookRentalToBookRentalModel(BookRental bookRental) {
+        return BookRentalModel
+                .builder()
+                .id(bookRental.getId().toString())
+                .userId(bookRental.getUser().getId().toString())
+                .bookId(bookRental.getBook().getId().toString())
+                .subscriptionId(bookRental.getSubscription().getId().toString())
+                .startDate(bookRental.getStartDate())
+                .endDate(bookRental.getEndDate())
+                .build();
     }
+
+
 }
