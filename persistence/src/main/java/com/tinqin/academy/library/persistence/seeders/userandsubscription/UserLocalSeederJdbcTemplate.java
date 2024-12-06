@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-@Order(1)
+@Order(2)
 public class UserLocalSeederJdbcTemplate implements ApplicationRunner {
     private final JdbcTemplate jdbcTemplate;
     private final String INSERT_USER_QUERY_TEMPLATE = """
@@ -33,11 +33,9 @@ public class UserLocalSeederJdbcTemplate implements ApplicationRunner {
 
         String countQuery = "SELECT COUNT(*) FROM users";
         Integer count = this.jdbcTemplate.queryForObject(countQuery, Integer.class);
-        if (count!=null&&count > 0) {
+        if (count != null && count > 0) {
             return;
         }
-
-
 
         String names = users
                 .stream()
