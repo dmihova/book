@@ -26,7 +26,6 @@ public class UserUnblockProcessor implements UnblockUser {
     private final UserRepository userRepository;
     private final ErrorHandler errorHandler;
 
-
     @Override
     public Either<OperationError, UnblockUserResult> process(UnblockUserInput input) {
         return fetchUser(UUID.fromString(input.getId()))
@@ -64,6 +63,5 @@ public class UserUnblockProcessor implements UnblockUser {
                 .build();
 
     }
-
 
 }

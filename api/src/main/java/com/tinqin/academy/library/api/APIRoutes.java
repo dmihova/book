@@ -12,6 +12,7 @@ public class APIRoutes {
     public static final String GET_AUTHOR = API_AUTHOR + "/{authorId}";
 
     public static final String API_USER = API + "/users";
+    public static final String GET_USER = API_USER  + "/{userId}";
     public static final String BLOCK_USER = API_USER + "/block/{userId}";
     public static final String UNBLOCK_USER = API_USER + "/unblock/{userId}";
 

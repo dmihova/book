@@ -3,9 +3,6 @@ package com.tinqin.academy.library.rest.controllers;
 
 import com.tinqin.academy.library.api.APIRoutes;
 import com.tinqin.academy.library.api.errors.OperationError;
-import com.tinqin.academy.library.api.operations.book.getbook.GetBookInput;
-import com.tinqin.academy.library.api.operations.book.getbook.GetBookResult;
-import com.tinqin.academy.library.api.operations.book.getbooksbyAuthor.GetBooksByAuthorResult;
 import com.tinqin.academy.library.api.operations.rental.createrental.CreateRental;
 import com.tinqin.academy.library.api.operations.rental.createrental.CreateRentalInput;
 import com.tinqin.academy.library.api.operations.rental.createrental.CreateRentalResult;
@@ -31,8 +28,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.Query;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -44,26 +39,14 @@ public class RentalController extends BaseController {
     private final ReturnRentalOperation returnRentalOperation;
 
 
-    @PostMapping(APIRoutes.API_RENTAL_RENT)
-    @Operation(summary = "Rent book ",
-            description = "Rent a book and return UUID")
-    public ResponseEntity<?> postRental(@Valid @RequestBody CreateRentalInput input) {
-
-        Either<OperationError, CreateRentalResult> process = createRental.process(input);
-        return mapToResponseEntity(process, HttpStatus.CREATED);
-
-    }
-
     @GetMapping(APIRoutes.API_RENTAL)
     public ResponseEntity<?> getRentals(@RequestParam(name = "userId", required = false, defaultValue = "") String userId,
                                         @RequestParam(name = "bookId", required = false, defaultValue = "") String bookId,
                                         @RequestParam(name = "subscriptionId", required = false, defaultValue = "") String subscriptionId,
                                         @SortDefault(sort = "start_date", direction = Sort.Direction.ASC)
-                                        @PageableDefault(page = 0, size = 10
+                                        @PageableDefault(size = 20
                                         ) Pageable pageable
     ) {
-
-        // PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("start_date").ascending());
         QueryBookRentalInput input = QueryBookRentalInput
                 .builder()
                 .userId(userId)
@@ -73,7 +56,6 @@ public class RentalController extends BaseController {
                 .build();
 
         Either<OperationError, QueryBookRentalResult> process = queryBookRental.process(input);
-
         return mapToResponseEntity(process, HttpStatus.OK);
     }
 
@@ -97,4 +79,14 @@ public class RentalController extends BaseController {
         return mapToResponseEntity(process, HttpStatus.CREATED);
     }
 
+
+    @PostMapping(APIRoutes.API_RENTAL_RENT)
+    @Operation(summary = "Rent book ",
+            description = "Rent a book and return UUID")
+    public ResponseEntity<?> postRental(@Valid @RequestBody CreateRentalInput input) {
+
+        Either<OperationError, CreateRentalResult> process = createRental.process(input);
+        return mapToResponseEntity(process, HttpStatus.CREATED);
+
+    }
 }

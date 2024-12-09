@@ -33,16 +33,6 @@ public class SubscriptionController extends BaseController {
     private final QuerySubscription querySubscription;
     private final DeleteSubscription deleteSubscription;
 
-    @PostMapping(APIRoutes.API_SUBSCRIPTION)
-    @Operation(summary = "Create subscription ",
-            description = "Create subscription and return UUID")
-    public ResponseEntity<?> createSubscription(@Valid @RequestBody CreateSubscriptionInput input) {
-
-        Either<OperationError, CreateSubscriptionResult> process = createSubscription.process(input);
-        return mapToResponseEntity(process, HttpStatus.CREATED);
-
-    }
-
     @GetMapping(APIRoutes.GET_SUBSCRIPTION)
     public ResponseEntity<?> getSubscription(@PathVariable("subscriptionId") String subscriptionId) {
         GetSubscriptionInput input = GetSubscriptionInput
@@ -56,12 +46,10 @@ public class SubscriptionController extends BaseController {
 
 
     @GetMapping(APIRoutes.API_SUBSCRIPTION)
-    public ResponseEntity<?> getSubscription(
+    public ResponseEntity<?> getSubscriptions(
             @RequestParam(value = "userId", required = false, defaultValue = "") String userId,
             @RequestParam(value = "active", required = false, defaultValue = "") boolean active
-
     ) {
-
         QuerySubscriptionInput input = QuerySubscriptionInput
                 .builder()
                 .userId(userId)
@@ -74,13 +62,23 @@ public class SubscriptionController extends BaseController {
     @DeleteMapping(APIRoutes.DELETE_SUBSCRIPTION)
     public ResponseEntity<?> deleteSubscription(@PathVariable("subscriptionId") String subscriptionId) {
 
-       DeleteSubscriptionInput input = DeleteSubscriptionInput
+        DeleteSubscriptionInput input = DeleteSubscriptionInput
                 .builder()
                 .subscriptionId(subscriptionId)
                 .build();
 
         Either<OperationError, DeleteSubscriptionResult> process = deleteSubscription.process(input);
         return mapToResponseEntity(process, HttpStatus.CREATED);
+    }
+
+    @PostMapping(APIRoutes.API_SUBSCRIPTION)
+    @Operation(summary = "Create subscription ",
+            description = "Create subscription and return UUID")
+    public ResponseEntity<?> postSubscription(@Valid @RequestBody CreateSubscriptionInput input) {
+
+        Either<OperationError, CreateSubscriptionResult> process = createSubscription.process(input);
+        return mapToResponseEntity(process, HttpStatus.CREATED);
+
     }
 
 }
