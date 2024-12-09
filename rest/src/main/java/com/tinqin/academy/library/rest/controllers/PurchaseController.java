@@ -32,16 +32,6 @@ public class PurchaseController extends BaseController {
     private final QueryPurchase queryPurchase;
 
 
-    @PostMapping(APIRoutes.API_PURCHASE)
-    @Operation(summary = "Create purchase ",
-            description = "Create purchase and return UUID")
-    public ResponseEntity<?> createSubscription(@Valid @RequestBody CreatePurchaseInput input) {
-
-        Either<OperationError, CreatePurchaseResult> process = createPurchase.process(input);
-        return mapToResponseEntity(process, HttpStatus.CREATED);
-
-    }
-
     @GetMapping(APIRoutes.GET_PURCHASE)
     public ResponseEntity<?> getPurchase(@PathVariable("purchaseId") String purchaseId) {
         GetPurchaseInput input = GetPurchaseInput
@@ -55,14 +45,14 @@ public class PurchaseController extends BaseController {
 
 
     @GetMapping(APIRoutes.API_PURCHASE)
-    public ResponseEntity<?> queryPurchases(@RequestParam(name = "userId", required = false, defaultValue = "") String userId,
-                                        @RequestParam(name = "bookId", required = false, defaultValue = "") String bookId,
-                                        @SortDefault(sort = "purchase_date", direction = Sort.Direction.ASC)
-                                        @PageableDefault(page = 0, size = 10
-                                        ) Pageable pageable
+    public ResponseEntity<?> getPurchases(@RequestParam(name = "userId", required = false, defaultValue = "") String userId,
+                                          @RequestParam(name = "bookId", required = false, defaultValue = "") String bookId,
+                                          @SortDefault(sort = "purchase_date", direction = Sort.Direction.ASC)
+                                          @PageableDefault(page = 0, size = 10
+                                          ) Pageable pageable
     ) {
 
-             QueryPurchaseInput input = QueryPurchaseInput
+        QueryPurchaseInput input = QueryPurchaseInput
                 .builder()
                 .userId(userId)
                 .bookId(bookId)
@@ -70,9 +60,17 @@ public class PurchaseController extends BaseController {
                 .build();
 
         Either<OperationError, QueryPurchaseResult> process = queryPurchase.process(input);
-
         return mapToResponseEntity(process, HttpStatus.OK);
     }
 
+    @PostMapping(APIRoutes.API_PURCHASE)
+    @Operation(summary = "Create purchase ",
+            description = "Create purchase and return UUID")
+    public ResponseEntity<?> postPurchase(@Valid @RequestBody CreatePurchaseInput input) {
+
+        Either<OperationError, CreatePurchaseResult> process = createPurchase.process(input);
+        return mapToResponseEntity(process, HttpStatus.CREATED);
+
+    }
 
 }

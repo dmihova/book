@@ -3,7 +3,7 @@ package com.tinqin.academy.library.core.processors.user;
 import com.tinqin.academy.library.api.errors.OperationError;
 import com.tinqin.academy.library.api.operations.user.blockuser.BlockUser;
 import com.tinqin.academy.library.api.operations.user.blockuser.BlockUserInput;
-import com.tinqin.academy.library.api.operations.user.blockuser.BlockUsrResult;
+import com.tinqin.academy.library.api.operations.user.blockuser.BlockUserResult;
 import com.tinqin.academy.library.core.errorhandler.base.ErrorHandler;
 import com.tinqin.academy.library.core.errorhandler.exceptions.BusinessException;
 import com.tinqin.academy.library.persistence.models.User;
@@ -26,7 +26,7 @@ public class UserBlockProcessor implements BlockUser {
 
 
     @Override
-    public Either<OperationError, BlockUsrResult> process(BlockUserInput input) {
+    public Either<OperationError, BlockUserResult> process(BlockUserInput input) {
         return fetchUser(UUID.fromString(input.getId()))
                 .flatMap(this::validateAdmin)
                 .flatMap(this::validateUnblockedUser)
@@ -60,8 +60,8 @@ public class UserBlockProcessor implements BlockUser {
         });
     }
 
-    private BlockUsrResult convertUserToBlockUserOutput(User user) {
-        return BlockUsrResult
+    private BlockUserResult convertUserToBlockUserOutput(User user) {
+        return BlockUserResult
                 .builder()
                 .id(user.getId().toString())
                 .build();

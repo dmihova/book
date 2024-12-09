@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class BlockUsrResult implements ProcessorResult {
+public class BlockUserResult implements ProcessorResult {
     private String id;
 
 }

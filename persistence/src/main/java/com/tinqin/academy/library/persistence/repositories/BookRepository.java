@@ -27,5 +27,6 @@ public interface BookRepository extends JpaRepository<Book, UUID>, BookRepositor
 
     List<Book> findByAuthors(List<Author> authors, Pageable pageable);
 
+
     Optional<Book> findByIdAndStockAfter(UUID uuid, int i);
 }

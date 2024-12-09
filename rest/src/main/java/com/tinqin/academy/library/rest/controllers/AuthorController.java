@@ -56,8 +56,6 @@ public class AuthorController extends BaseController {
 
         Either<OperationError, QueryAuthorResult> result = queryAuthor.process(input);
         return mapToResponseEntity(result, HttpStatus.OK);
-
-
     }
 
     @PostMapping(APIRoutes.API_AUTHOR)
@@ -66,11 +64,10 @@ public class AuthorController extends BaseController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Not found")})
+    public ResponseEntity<?> postAuthor(@RequestBody CreateAuthorInput input) {
 
-    public ResponseEntity<?> createAuthor(@RequestBody CreateAuthorInput input) {
         Either<OperationError, CreateAuthorResult> process = createAuthor.process(input);
         return mapToResponseEntity(process,HttpStatus.CREATED);
-
     }
 
 }
