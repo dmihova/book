@@ -1,11 +1,13 @@
 package com.tinqin.academy.library.core.processors.book;
 
 import com.tinqin.academy.library.api.errors.OperationError;
+import com.tinqin.academy.library.api.operations.author.createauthor.CreateAuthorInput;
 import com.tinqin.academy.library.api.operations.book.createbook.CreateBook;
 import com.tinqin.academy.library.api.operations.book.createbook.CreateBookInput;
 import com.tinqin.academy.library.api.operations.book.createbook.CreateBookResult;
 import com.tinqin.academy.library.core.errorhandler.base.ErrorHandler;
 import com.tinqin.academy.library.core.errorhandler.exceptions.BusinessException;
+import com.tinqin.academy.library.domain.clients.ReportingClient;
 import com.tinqin.academy.library.persistence.models.Author;
 import com.tinqin.academy.library.persistence.models.Book;
 import com.tinqin.academy.library.persistence.repositories.AuthorRepository;
@@ -22,8 +24,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.tinqin.academy.library.api.ValidationMessages.AUTHOR_NOT_FOUND;
-import static com.tinqin.academy.library.api.ValidationMessages.USER_IS_ALREADY_BLOCK;
+import static com.tinqin.academy.library.api.ValidationMessages.*;
 
 @Service
 @RequiredArgsConstructor
@@ -33,17 +34,26 @@ public class CreateBookOperation implements CreateBook {
     private final AuthorRepository authorRepository;
     private final ConversionService conversionService;
     private final ErrorHandler errorHandler;
+    private final ReportingClient reportingClient;
 
     @Override
     public Either<OperationError, CreateBookResult> process(CreateBookInput input) {
-        return getAuthors(input)
+        return createRecord(input)
+                .flatMap(this::getAuthors)
                 .flatMap(author -> createBook(input, author))
                 .flatMap(this::saveBook)
                 .toEither()
                 .mapLeft(errorHandler::handle);
     }
 
-    private   Try<List<Author>> getAuthors(CreateBookInput input) {
+    private Try<CreateBookInput> createRecord(CreateBookInput input) {
+        return Try.of(() -> {
+            reportingClient.createRecord();
+            return input;
+        });
+    }
+
+    private Try<List<Author>> getAuthors(CreateBookInput input) {
         int length=input.getAuthorIds().size();
         if(length==0)
             return Try.of(List::of);

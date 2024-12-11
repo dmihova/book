@@ -9,5 +9,18 @@
 	</parent>
 
 	<artifactId>domain</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>com.tinqin.academy.reporting</groupId>
+			<artifactId>restexport</artifactId>
+			<version>${reporting.revision}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-jackson</artifactId>
+			<version>13.3</version>
+		</dependency>
+	</dependencies>
 
 </project>
