@@ -9,8 +9,8 @@
         <version>3.3.5</version>
     </parent>
 
-    <groupId>com.tinqin.academy.library</groupId>
-    <artifactId>library</artifactId>
+    <groupId>com.tinqin.library.book</groupId>
+    <artifactId>book</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 

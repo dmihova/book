@@ -5,8 +5,8 @@
 
 
     <parent>
-        <groupId>com.tinqin.academy.library</groupId>
-        <artifactId>library</artifactId>
+        <groupId>com.tinqin.library.book</groupId>
+        <artifactId>book</artifactId>
         <version>${revision}</version>
     </parent>
 

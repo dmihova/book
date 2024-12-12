@@ -3,16 +3,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.tinqin.academy.library</groupId>
-        <artifactId>library</artifactId>
+        <groupId>com.tinqin.library.book</groupId>
+        <artifactId>book</artifactId>
         <version>${revision}</version>
     </parent>
 
     <artifactId>rest</artifactId>
+
     <dependencies>
         <dependency>
-            <groupId>com.tinqin.academy.library</groupId>
+            <groupId>com.tinqin.library.book</groupId>
             <artifactId>core</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tinqin.library.book</groupId>
+            <artifactId>api</artifactId>
             <version>${revision}</version>
         </dependency>
 
