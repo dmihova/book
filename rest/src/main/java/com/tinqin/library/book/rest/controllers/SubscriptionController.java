@@ -19,6 +19,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.vavr.control.Either;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,12 +52,15 @@ public class SubscriptionController extends BaseController {
     @GetMapping(APIRoutes.API_SUBSCRIPTION)
     public ResponseEntity<?> getSubscriptions(
             @RequestParam(value = "userId", required = false, defaultValue = "") String userId,
-            @RequestParam(value = "active", required = false, defaultValue = "") boolean active
-    ) {
+            @RequestParam(value = "active", required = false, defaultValue = "") boolean active,
+            @SortDefault(sort = "user", direction = Sort.Direction.ASC)
+            @PageableDefault(page = 0, size = 10) Pageable pageable)
+     {
         QuerySubscriptionInput input = QuerySubscriptionInput
                 .builder()
                 .userId(userId)
                 .active(active)
+                .pageable(pageable)
                 .build();
         Either<OperationError, QuerySubscriptionResult> result = querySubscription.process(input);
         return mapToResponseEntity(result, HttpStatus.OK);
@@ -80,5 +87,8 @@ public class SubscriptionController extends BaseController {
         return mapToResponseEntity(process, HttpStatus.CREATED);
 
     }
+
+
+
 
 }

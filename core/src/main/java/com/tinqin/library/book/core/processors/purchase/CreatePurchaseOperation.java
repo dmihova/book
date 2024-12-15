@@ -12,8 +12,6 @@ import com.tinqin.library.book.persistence.models.User;
 import com.tinqin.library.book.persistence.repositories.BookRepository;
 import com.tinqin.library.book.persistence.repositories.PurchaseRepository;
 import com.tinqin.library.book.persistence.repositories.UserRepository;
-import com.tinqin.library.book.persistence.models.*;
-import com.tinqin.library.book.persistence.repositories.*;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;

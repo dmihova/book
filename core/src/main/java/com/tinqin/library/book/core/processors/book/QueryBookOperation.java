@@ -8,14 +8,18 @@ import com.tinqin.library.book.api.operations.book.querybook.QueryBookInput;
 import com.tinqin.library.book.api.operations.book.querybook.QueryBookResult;
 import com.tinqin.library.book.core.errorhandler.base.ErrorHandler;
 import com.tinqin.library.book.core.errorhandler.exceptions.BusinessException;
+import com.tinqin.library.book.core.queryfactory.BookQuery;
+import com.tinqin.library.book.core.queryfactory.PurchaseQuery;
 import com.tinqin.library.book.persistence.models.Author;
 import com.tinqin.library.book.persistence.models.Book;
+import com.tinqin.library.book.persistence.models.Purchase;
 import com.tinqin.library.book.persistence.repositories.AuthorRepository;
 import com.tinqin.library.book.persistence.repositories.BookRepository;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -26,7 +30,6 @@ import static com.tinqin.library.book.api.ValidationMessages.AUTHOR_NOT_FOUND;
 @RequiredArgsConstructor
 public class QueryBookOperation implements QueryBook {
     private final BookRepository bookRepository;
-    private final AuthorRepository authorRepository;
     private final ConversionService conversionService;
     private final ErrorHandler errorHandler;
 
@@ -40,16 +43,10 @@ public class QueryBookOperation implements QueryBook {
                 .mapLeft(errorHandler::handle);
     }
 
-
     private Try<QueryBookResult> convertToQueryBookOutput(List<BookWithAuthorsModel> bookModels) {
         return Try.of(() -> QueryBookResult.builder()
                 .bookModelList(bookModels)
                 .build());
-    }
-
-    private Try<Author> getAuthor(UUID authorId) {
-        return Try.of(() -> authorRepository.findById(authorId)
-                .orElseThrow(() -> new BusinessException(AUTHOR_NOT_FOUND)));
     }
 
     private Try<List<BookWithAuthorsModel>> getBooks(QueryBookInput input) {
@@ -60,7 +57,13 @@ public class QueryBookOperation implements QueryBook {
     }
 
     private Collection<Book> getBooksByParameter(QueryBookInput input) {
-        if (!input.getAuthorFirstName().isEmpty()
+        Specification<Book> specification = BookQuery.getSpecification(input);
+        return bookRepository
+                .findAll(specification, input.getPageable()).toList();
+
+
+
+     /*   if (!input.getAuthorFirstName().isEmpty()
                 && !input.getAuthorLastName().isEmpty()
                 && !input.getTitle().isEmpty()) {
             return bookRepository.findByTitleLikeAndAuthors_FirstNameLikeAndAuthors_LastNameLike(
@@ -78,11 +81,11 @@ public class QueryBookOperation implements QueryBook {
         }
         else {
             return bookRepository.findAll();
-        }
+        }*/
+
 
     }
 }
-
 
 
 

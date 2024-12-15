@@ -7,6 +7,9 @@ import com.tinqin.library.book.api.operations.rental.queryrental.QueryBookRental
 import com.tinqin.library.book.api.operations.rental.queryrental.QueryBookRentalResult;
 import com.tinqin.library.book.core.errorhandler.base.ErrorHandler;
 import com.tinqin.library.book.core.errorhandler.exceptions.BusinessException;
+import com.tinqin.library.book.core.queryfactory.BookRentalQuery;
+import com.tinqin.library.book.core.queryfactory.SubscriptionQuery;
+import com.tinqin.library.book.core.queryfactory.querymodel.BookRentalFilter;
 import com.tinqin.library.book.persistence.models.Book;
 import com.tinqin.library.book.persistence.models.BookRental;
 import com.tinqin.library.book.persistence.models.Subscription;
@@ -20,6 +23,7 @@ import com.tinqin.library.book.persistence.repositories.*;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,20 +47,28 @@ public class QueryBookRentalsOperation implements QueryBookRental {
         return Try.of(() -> {
             User user = null;
             if (!input.getUserId().isEmpty()) {
-                user = userRepository.findById(UUID.fromString(input.getUserId())).orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
+                user = userRepository
+                        .findById(UUID.fromString(input.getUserId()))
+                        .orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
             }
             Book book = null;
             if (!input.getBookId().isEmpty()) {
-                book = bookRepository.findById(UUID.fromString(input.getBookId())).orElseThrow(() -> new BusinessException(BOOK_NOT_FOUND));
+                book = bookRepository
+                        .findById(UUID.fromString(input.getBookId()))
+                        .orElseThrow(() -> new BusinessException(BOOK_NOT_FOUND));
             }
 
             Subscription subscription = null;
             if (!input.getSubscriptionId().isEmpty()) {
-                subscription = subscriptionRepository.findById(UUID.fromString(input.getSubscriptionId()))
+                subscription = subscriptionRepository
+                        .findById(UUID.fromString(input.getSubscriptionId()))
                         .orElseThrow(() -> new BusinessException(SUBSCRIPTION_NOT_FOUND));
             }
 
-            List<BookRental> entityBooks = bookRentalRepository.findAll();
+            BookRentalFilter filter = new BookRentalFilter( user, book, subscription) ;
+            Specification<BookRental> specification = BookRentalQuery.getSpecification(filter);
+            List<BookRental> entityBooks = bookRentalRepository
+                    .findAll(specification,input.getPageable()).toList();
 
             List<BookRentalModel> bookRentalModels = entityBooks
                     .stream()

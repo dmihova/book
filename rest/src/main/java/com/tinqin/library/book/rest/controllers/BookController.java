@@ -56,8 +56,11 @@ public class BookController extends BaseController {
     public ResponseEntity<?> getBooks(
             @RequestParam(value = "title%", required = false, defaultValue = "") String title,
             @RequestParam(value = "authorId", required = false, defaultValue = "") String authorId,
-            @RequestParam(value = "authorFirstName", required = false, defaultValue = "") String authorFirstName,
-            @RequestParam(value = "authorLastName", required = false, defaultValue = "") String authorLastName
+            @RequestParam(value = "authorFirstName%", required = false, defaultValue = "") String authorFirstName,
+            @RequestParam(value = "authorLastName%", required = false, defaultValue = "") String authorLastName,
+            @SortDefault(sort = "title", direction = Sort.Direction.ASC)
+            @PageableDefault(page = 0, size = 20
+            ) Pageable pageable
     ) {
 
         QueryBookInput input = QueryBookInput
@@ -66,6 +69,7 @@ public class BookController extends BaseController {
                 .authorId(authorId)
                 .authorFirstName(authorFirstName)
                 .authorLastName(authorLastName)
+                .pageable(pageable)
                 .build();
         Either<OperationError, QueryBookResult> result = queryBook.process(input);
         return mapToResponseEntity(result, HttpStatus.OK);
