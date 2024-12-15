@@ -26,7 +26,14 @@ public class UserLocalSeederJdbcTemplate implements ApplicationRunner {
     private final List<String> users = List.of(
             "Admin Admin 1 0",
             "Pepi Petrov 0 0",
-            "Niki Todorov 0 0");
+            "Niki Todorov 0 0",
+            "Joko Todorov 0 0",
+            "Alice Nikolova 0 0",
+            "Mika Dobreva 0 0",
+            "Sami Dodov 0 0",
+            "Niki Nikolov 0 0"
+
+            );
 
     @Override
     public void run(ApplicationArguments args) throws Exception {

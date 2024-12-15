@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.UUID;
+import org.springframework.data.domain.Pageable;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,5 +22,6 @@ public class QueryBookInput implements ProcessorInput {
     private String authorFirstName;
     private String authorLastName;
 
+    Pageable pageable;
 
 }

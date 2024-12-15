@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SubscriptionEntityToSubscriptionModel
-            implements Converter<Subscription, SubscriptionModel> {
+        implements Converter<Subscription, SubscriptionModel> {
 
 
     @Override
@@ -18,8 +18,11 @@ public class SubscriptionEntityToSubscriptionModel
                 .canRent(source.getCanRent())
                 .startDate(source.getStartDate())
                 .endDate(source.getEndDate())
-                .userId(source.getUser().getId())
-                .userName(source.getUser().getLastName())
+                .user(new SubscriptionModel.SubscriptionUser(
+                        source.getUser().getId(),
+                        source.getUser().getFirstName(),
+                        source.getUser().getLastName()
+                ))
                 .build();
     }
 }

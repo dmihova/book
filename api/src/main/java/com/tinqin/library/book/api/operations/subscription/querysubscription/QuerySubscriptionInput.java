@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.UUID;
+import org.springframework.data.domain.Pageable;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,5 +19,7 @@ public class QuerySubscriptionInput implements ProcessorInput {
     private String userId;
 
     private boolean active;
+
+    Pageable pageable;
 
 }

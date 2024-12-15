@@ -19,7 +19,9 @@ public class SubscriptionModel {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate endDate;
     private boolean canRent;
+    private SubscriptionUser user;
 
-    private UUID userId;
-    private String userName;
+    public record SubscriptionUser(UUID id, String firstName, String lastName) {
+    }
+
 }

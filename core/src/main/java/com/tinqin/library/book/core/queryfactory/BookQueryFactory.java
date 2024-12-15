@@ -13,7 +13,7 @@ import java.util.Optional;
 
 
 @Component
-public class BookQueryFactory implements QueryFactory {
+public class BookQueryFactory  implements QueryFactory {
 
     private final EntityManager entityManager;
     private final CriteriaBuilder cb;

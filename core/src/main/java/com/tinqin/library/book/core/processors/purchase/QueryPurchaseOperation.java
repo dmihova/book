@@ -7,6 +7,8 @@ import com.tinqin.library.book.api.operations.purchase.querypurchase.QueryPurcha
 import com.tinqin.library.book.api.operations.purchase.querypurchase.QueryPurchaseResult;
 import com.tinqin.library.book.core.errorhandler.base.ErrorHandler;
 import com.tinqin.library.book.core.errorhandler.exceptions.BusinessException;
+import com.tinqin.library.book.core.queryfactory.PurchaseQuery;
+import com.tinqin.library.book.core.queryfactory.querymodel.PurchaseFilter;
 import com.tinqin.library.book.persistence.models.Book;
 import com.tinqin.library.book.persistence.models.Purchase;
 import com.tinqin.library.book.persistence.models.User;
@@ -16,6 +18,7 @@ import com.tinqin.library.book.persistence.repositories.UserRepository;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,7 +49,17 @@ public class QueryPurchaseOperation implements QueryPurchase {
                 book = bookRepository.findById(UUID.fromString(input.getBookId())).orElseThrow(() -> new BusinessException(BOOK_NOT_FOUND));
             }
 
-            List<Purchase> entityPurchases = purchaseRepository.findAll();
+
+            PurchaseFilter filter =  PurchaseFilter
+                    .builder()
+                    .book(book)
+                    .user(user)
+                    .build();
+
+            Specification<Purchase> specification = PurchaseQuery.getSpecification(filter);
+            List<Purchase> entityPurchases = purchaseRepository
+                    .findAll(specification,input.getPageable()).toList();
+
 
             List<PurchaseModel> purchaseModels = entityPurchases
                     .stream()

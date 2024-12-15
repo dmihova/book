@@ -43,7 +43,7 @@ public class RentalController extends BaseController {
     public ResponseEntity<?> getRentals(@RequestParam(name = "userId", required = false, defaultValue = "") String userId,
                                         @RequestParam(name = "bookId", required = false, defaultValue = "") String bookId,
                                         @RequestParam(name = "subscriptionId", required = false, defaultValue = "") String subscriptionId,
-                                        @SortDefault(sort = "start_date", direction = Sort.Direction.ASC)
+                                        @SortDefault(sort = "startDate", direction = Sort.Direction.ASC)
                                         @PageableDefault(size = 20
                                         ) Pageable pageable
     ) {

@@ -34,7 +34,6 @@ public class Subscription {
     private LocalDate startDate;
 
     @Column(name = "end_date", nullable = false )
-    @CreationTimestamp
     private LocalDate endDate;
 
     @Column(name = "can_rent")
