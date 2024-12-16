@@ -20,22 +20,19 @@ public class BookQuery {
             if (!((filter.getAuthorId() == null || filter.getAuthorId().isEmpty()) &&
                     (filter.getAuthorFirstName() == null || !filter.getAuthorFirstName().isEmpty()) &&
                     (filter.getAuthorLastName() == null || !filter.getAuthorLastName().isEmpty()))) {
-            }
 
-            Join<Book, Author> author = root.join("authors");
-            if (filter.getAuthorId() != null && !filter.getAuthorId().isEmpty()) {
-                predicates.add(criteriaBuilder.equal(root.get("authors").get("id"), UUID.fromString(filter.getAuthorId())));
-            } else {
-                if (filter.getAuthorFirstName() != null && !filter.getAuthorFirstName().isEmpty()) {
-                    predicates.add(criteriaBuilder.like(root.get("authors").get("firstName"), filter.getAuthorFirstName()+ "%"));
+                Join<Book, Author> author = root.join("authors");
+                if (filter.getAuthorId() != null && !filter.getAuthorId().isEmpty()) {
+                    predicates.add(criteriaBuilder.equal(root.get("authors").get("id"), UUID.fromString(filter.getAuthorId())));
+                } else {
+                    if (filter.getAuthorFirstName() != null && !filter.getAuthorFirstName().isEmpty()) {
+                        predicates.add(criteriaBuilder.like(root.get("authors").get("firstName"), filter.getAuthorFirstName() + "%"));
+                    }
+                    if (filter.getAuthorLastName() != null && !filter.getAuthorLastName().isEmpty()) {
+                        predicates.add(criteriaBuilder.like(root.get("authors").get("lastName"), filter.getAuthorLastName() + "%"));
+                    }
                 }
-                if (filter.getAuthorLastName() != null && !filter.getAuthorLastName().isEmpty()) {
-                    predicates.add(criteriaBuilder.like(root.get("authors").get("lastName"), filter.getAuthorLastName()+ "%"));
-                }
             }
-
-
-
 
             if (!filter.getTitle().isEmpty()) {
                 return criteriaBuilder.like(root.get("title"), filter.getTitle() + "%");
