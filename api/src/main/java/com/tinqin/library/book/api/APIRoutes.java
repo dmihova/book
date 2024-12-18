@@ -33,6 +33,10 @@ public class APIRoutes {
     public static final String GET_PURCHASE = API_PURCHASE + "/{purchaseId}";
 
 
+    public static final String AUTH = API + "/auth";
+    public static final String LOGIN = AUTH + "/login";
+    public static final String REGISTER = AUTH + "/register";
+
 
 
 

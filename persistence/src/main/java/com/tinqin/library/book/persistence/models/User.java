@@ -32,5 +32,11 @@ public class User {
     @Column(name = "is_blocked")
     private boolean isBlocked;
 
+    @Column(name = "username" ,unique = true,nullable = false)
+    private String username;
+
+    @Column(name = "password")
+    private String password;
+
 
 }
