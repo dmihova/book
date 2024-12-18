@@ -1,6 +1,7 @@
 package com.tinqin.library.book.persistence.repositories;
 
 import com.tinqin.library.book.persistence.models.User;
+import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,8 +21,12 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
     @Query(value = "SELECT u.id FROM User u WHERE u.id = :userId AND u.isBlocked = false")
     Optional<UUID> findUnblockUserId(@Param("userId") UUID userId);
 
+    @NonNull
     List<User> findAll(Specification<User> specification);
-    Page<User> findAll(Specification<User> specification, Pageable pageable);
+    @NonNull
+    Page<User> findAll(  Specification<User> specification,  @NonNull Pageable pageable);
+    @NonNull
     List<User> findAll( );
 
+    Optional<User> findByUsername(String username);
 }
