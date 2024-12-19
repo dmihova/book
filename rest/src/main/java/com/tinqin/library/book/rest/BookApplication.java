@@ -6,7 +6,9 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication(scanBasePackages = "com.tinqin.library.book")
+@SpringBootApplication(scanBasePackages = {
+                        "com.tinqin.library.book",
+                                "com.tinqin.library.reporting"})
 @EntityScan("com.tinqin.library.book.persistence.models")
 @EnableJpaRepositories(basePackages = "com.tinqin.library.book.persistence.repositories")
 @EnableFeignClients (basePackages = "com.tinqin.library.book.domain")
