@@ -1,5 +1,9 @@
 package com.tinqin.library.book.persistence.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -50,7 +54,9 @@ public class Book {
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
-    @ManyToMany(fetch = FetchType.EAGER )
+    @ToString.Exclude
+    @JsonIgnoreProperties("books")
+    @ManyToMany(fetch = FetchType.LAZY )
     @JoinTable(
             name = "book_authors",
             joinColumns = @JoinColumn(name = "book_id"),
