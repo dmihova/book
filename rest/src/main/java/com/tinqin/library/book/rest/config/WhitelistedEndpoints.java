@@ -11,7 +11,9 @@ public class WhitelistedEndpoints {
             "/actuator/**",
             "/instances/**",
             "/v3/**",
-            "/error"
+            "/error",
 
+
+            "/api/v1/**"
     };
 }

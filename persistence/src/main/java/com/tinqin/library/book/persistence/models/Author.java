@@ -1,5 +1,6 @@
 package com.tinqin.library.book.persistence.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -39,6 +40,7 @@ public class Author {
             inverseJoinColumns = @JoinColumn(name = "book_id")
     )
     @ToString.Exclude
+    @JsonIgnoreProperties("authors")
     private List<Book> books;
 
 }

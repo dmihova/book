@@ -15,6 +15,9 @@ import com.tinqin.library.book.api.operations.book.createbook.CreateBookResult;
 import com.tinqin.library.book.api.operations.book.getbooksbyAuthor.GetBooksByAuthor;
 import com.tinqin.library.book.api.operations.book.getbooksbyAuthor.GetBooksByAuthorInput;
 import com.tinqin.library.book.api.operations.book.getbooksbyAuthor.GetBooksByAuthorResult;
+import com.tinqin.library.book.api.operations.book.partialedit.PartialEditBook;
+import com.tinqin.library.book.api.operations.book.partialedit.PartialEditBookInput;
+import com.tinqin.library.book.api.operations.book.partialedit.PartialEditBookResult;
 import com.tinqin.library.book.api.operations.book.querybook.QueryBook;
 import com.tinqin.library.book.api.operations.book.querybook.QueryBookInput;
 import com.tinqin.library.book.api.operations.book.querybook.QueryBookResult;
@@ -40,6 +43,7 @@ public class BookController extends BaseController {
     private final CreateBook createBook;
     private final DeleteBook deleteBook;
     private final GetBooksByAuthor getBooksByAuthor;
+    private final PartialEditBook partialEditBook;
 
     @GetMapping(APIRoutes.GET_BOOK)
     public ResponseEntity<?> getBook(@PathVariable("bookId") String bookId) {
@@ -111,6 +115,20 @@ public class BookController extends BaseController {
         Either<OperationError, DeleteBookResult> process = deleteBook.process(input);
         return mapToResponseEntity(process, HttpStatus.CREATED);
 
+    }
+
+    @PatchMapping(APIRoutes.GET_BOOK)
+    public ResponseEntity<?> partialEditBook(@PathVariable("bookId") String bookId,
+                                             @RequestBody PartialEditBookInput request) {
+
+        PartialEditBookInput input = request
+                .toBuilder()
+                .bookId(bookId)
+                .build();
+
+        Either<OperationError, PartialEditBookResult> process = partialEditBook.process(input);
+
+        return mapToResponseEntity(process, HttpStatus.OK);
     }
 
 }
