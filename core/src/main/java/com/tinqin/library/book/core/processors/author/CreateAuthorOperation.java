@@ -5,9 +5,9 @@ import com.tinqin.library.book.api.operations.author.createauthor.CreateAuthor;
 import com.tinqin.library.book.api.operations.author.createauthor.CreateAuthorInput;
 import com.tinqin.library.book.api.operations.author.createauthor.CreateAuthorResult;
 import com.tinqin.library.book.core.errorhandler.base.ErrorHandler;
-import com.tinqin.library.book.domain.clients.ReportingClient;
 import com.tinqin.library.book.persistence.models.Author;
 import com.tinqin.library.book.persistence.repositories.AuthorRepository;
+import com.tinqin.library.reporting.kafkaexport.KafkaProducerService;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class CreateAuthorOperation implements CreateAuthor {
     private final AuthorRepository authorRepository;
     private final ConversionService conversionService;
     private final ErrorHandler errorHandler;
-    private final ReportingClient reportingClient;
+    private final KafkaProducerService producerService;
 
     @Value("${reporting.active}")
     private boolean reportingEnabled;
@@ -30,26 +30,22 @@ public class CreateAuthorOperation implements CreateAuthor {
 
     @Override
     public Either<OperationError, CreateAuthorResult> process(CreateAuthorInput input) {
-        return createRecord(input)
-                .map(inputFromRecord -> conversionService.convert(inputFromRecord, Author.class))
-                .flatMap(this::saveAuthor)
+        return saveAuthor(input)
                 .toEither()
                 .mapLeft(errorHandler::handle);
     }
 
-    private Try<CreateAuthorInput> createRecord(CreateAuthorInput input) {
-        return Try.of(() -> {
-            if (reportingEnabled) {
-                reportingClient.createRecord();
-            }
-            return input;
-        });
-    }
 
-    private Try<CreateAuthorResult> saveAuthor(Author author) {
-        return Try.of(() -> authorRepository.save(author))
-                .map(savedAuthor -> CreateAuthorResult.builder()
-                        .id(savedAuthor.getId())
-                        .build());
+    private Try<CreateAuthorResult> saveAuthor(CreateAuthorInput input) {
+        return Try.of(() -> {
+            Author newAuthor = conversionService.convert(input, Author.class);
+            Author savedAuthor = authorRepository.save(newAuthor);
+            if (reportingEnabled) {
+                producerService.createAuthorRecord(savedAuthor.getId());
+            }
+            return CreateAuthorResult.builder()
+                    .id(savedAuthor.getId())
+                    .build();
+        });
     }
 }
