@@ -15,6 +15,6 @@ public class PartialEditPojo {
 
     private String bookId;
     private String title;
-    private String pages;
+    private Integer pages;
     private BigDecimal price;
 }

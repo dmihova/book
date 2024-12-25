@@ -7,7 +7,7 @@ import com.tinqin.library.book.api.operations.user.queryuser.QueryUserInput;
 import com.tinqin.library.book.api.operations.user.queryuser.QueryUserResult;
 import com.tinqin.library.book.core.errorhandler.base.ErrorHandler;
 
-import com.tinqin.library.book.core.queryfactory.UserQuery;
+import com.tinqin.library.book.core.specification.UserSpecification;
 import com.tinqin.library.book.persistence.models.User;
 import com.tinqin.library.book.persistence.repositories.UserRepository;
 import io.vavr.control.Either;
@@ -54,7 +54,7 @@ public class QueryUserProcessor implements QueryUser {
 
     private Try<List<User>> getUsers(QueryUserInput input) {
         return Try.of(() -> {
-            Specification<User> specification = UserQuery.getSpecification(input);
+            Specification<User> specification = UserSpecification.getSpecification(input);
             return userRepository.findAll(specification, input.getPageable()).toList();
         });
     }

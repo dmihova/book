@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tinqin.library.book.api.base.ProcessorInput;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,16 +28,22 @@ public class PartialEditBookInput implements ProcessorInput {
     @JsonIgnore
     private String bookId;
 
-    @Length(min=5,max=100,message = BOOK_TITLE_SIZE)
+    @Length(min=3,max=100,message = BOOK_TITLE_SIZE)
     private String title;
 
     private List<String> authorIds;
 
-
-    private String pages;
+    @Min(0)
+    private Integer pages;
 
     @DecimalMin(value ="1.0")
     private BigDecimal price;
+
+    @DecimalMin(value ="0")
+    private BigDecimal  pricePerRental;
+
+    @Min(0)
+    private Integer  stock;
 
 }
 

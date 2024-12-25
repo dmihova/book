@@ -1,8 +1,5 @@
 package com.tinqin.library.book.persistence.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,7 +30,7 @@ public class Book {
     private String title;
 
     @Column(name = "pages", nullable = false)
-    private String pages;
+    private Integer pages;
 
     @Column(name = "price", nullable = false)
     private BigDecimal price;
@@ -44,9 +41,9 @@ public class Book {
     @Column(name = "stock", nullable = false)
     private Integer stock;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_on", nullable = false)
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private LocalDateTime createdOn;
 
     @Column(name = "updated_on")
     private LocalDateTime updatedOn;
@@ -65,12 +62,6 @@ public class Book {
     private List<Author> authors;
 
 
-//    @ManyToMany
-//    @JoinTable(
-//             name="book_categories",
-//             joinColumns = @JoinColumn (name ="book_id"),
-//             inverseJoinColumns = @JoinColumn(name="category_id"))
-//    private List<Category> categories;
 
 
 }

@@ -2,7 +2,7 @@ package com.tinqin.library.book.persistence.repositories;
 
 import com.tinqin.library.book.persistence.models.Subscription;
 import com.tinqin.library.book.persistence.models.User;
-import io.vavr.Value;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,17 +19,7 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, UUID
 
     List<Subscription> findByUser(User user);
 
-    List<Subscription> findByUser_Id(UUID id);
-
-    Page<Subscription> findByUser_Id(UUID id, Pageable pageable);
-
-
-    Optional<Subscription> findByUserAndEndDateGreaterThanEqualAndCanRent(User user, LocalDate endDate, Boolean canRent);
-
-    Page<Subscription> findByUser_IdAndCanRentAndEndDateGreaterThanEqualAndStartDateLessThanEqual(UUID id, Boolean canRent, LocalDate endDate, LocalDate startDate, Pageable pageable);
-
-    Page<Subscription> findByCanRentAndEndDateGreaterThanEqualAndStartDateLessThanEqual(  Boolean canRent, LocalDate endDate, LocalDate startDate, Pageable pageable);
-
-
     Page<Subscription> findAll(Specification<Subscription> specification, Pageable pageable);
+
+    List<Subscription> findByUserAndEndDateGreaterThanEqualAndCanRent(User user, LocalDate now, boolean b);
 }

@@ -1,6 +1,5 @@
 package com.tinqin.library.book.api.operations.book.getbook;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tinqin.library.book.api.base.ProcessorResult;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,11 +18,17 @@ public class GetBookResult implements ProcessorResult {
 
     private List<GetBookAuthor> authors;
     private String title;
-    private String pages;
+    private Integer pages;
+
     private BigDecimal price;
-    private int stock;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createdAt;
+    private BigDecimal pricePerRental;
+    private Integer stock;
+
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdOn;
+    private LocalDateTime updatedOn;
+    private Boolean isDeleted;
+
 
      public record GetBookAuthor(String authorId, String firstName, String lastName) {
     }

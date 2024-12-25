@@ -1,4 +1,4 @@
-package com.tinqin.library.book.core.queryfactory;
+package com.tinqin.library.book.core.specification;
 
 import com.tinqin.library.book.api.operations.subscription.querysubscription.QuerySubscriptionInput;
 import com.tinqin.library.book.persistence.models.Subscription;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class SubscriptionQuery {
+public class SubscriptionSpecification {
     public static Specification<Subscription> getSpecification(QuerySubscriptionInput filter) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();

@@ -27,7 +27,7 @@ import static com.tinqin.library.book.api.ValidationMessages.*;
 
 @Service
 @RequiredArgsConstructor
-public class CreateRentalOperation implements CreateRental {
+public class CreateBookRentalOperation implements CreateRental {
     private final BookRentalRepository bookRentalRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final BookRepository bookRepository;
@@ -53,16 +53,25 @@ public class CreateRentalOperation implements CreateRental {
 
     private Try<Subscription> fetchActiveSubscription(User user) {
         return Try.of(() ->
-                subscriptionRepository.findByUserAndEndDateGreaterThanEqualAndCanRent(user, LocalDate.now(), true)
+                  subscriptionRepository.findByUserAndEndDateGreaterThanEqualAndCanRent(user, LocalDate.now(), true)
+                        .stream().findFirst()
                         .orElseThrow(() -> new BusinessException(SUBSCRIPTION_NOT_FOUND)));
+
     }
 
 
     private Try<BookRental> createRental(String bookId, Subscription subscriptionEntity) {
         return Try.of(() -> {
             Book book = bookRepository
-                    .findByIdAndStockAfter(UUID.fromString(bookId), 0)
+                    .findById(UUID.fromString(bookId))
                     .orElseThrow(() -> new BusinessException(BOOK_NOT_FOUND));
+            if (book.getIsDeleted()) {
+                throw new BusinessException(BOOK_STOPPED);
+            }
+            if (book.getStock() <= 0) {
+                throw new BusinessException(BOOK_OUT_OF_STOCK);
+            }
+
             BookRental newRental = BookRental
                     .builder()
                     .book(book)
@@ -76,10 +85,11 @@ public class CreateRentalOperation implements CreateRental {
         });
     }
 
-
     private Try<CreateRentalResult> convertToResult(BookRental bookRental) {
         return Try.of(() -> CreateRentalResult.builder()
                 .id(bookRental.getId())
+                .startDate(bookRental.getStartDate())
+                .endDate(bookRental.getEndDate())
                 .build());
     }
 

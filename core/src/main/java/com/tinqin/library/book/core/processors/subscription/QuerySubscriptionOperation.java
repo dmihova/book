@@ -8,7 +8,7 @@ import com.tinqin.library.book.api.operations.subscription.querysubscription.Que
 import com.tinqin.library.book.api.operations.subscription.querysubscription.QuerySubscriptionResult;
 import com.tinqin.library.book.core.errorhandler.base.ErrorHandler;
 import com.tinqin.library.book.core.errorhandler.exceptions.BusinessException;
-import com.tinqin.library.book.core.queryfactory.SubscriptionQuery;
+import com.tinqin.library.book.core.specification.SubscriptionSpecification;
 import com.tinqin.library.book.persistence.models.Subscription;
 import com.tinqin.library.book.persistence.models.User;
 import com.tinqin.library.book.persistence.repositories.SubscriptionRepository;
@@ -53,7 +53,7 @@ public class QuerySubscriptionOperation implements QuerySubscription {
     }
     private Try<List<Subscription>> getSubscriptions(QuerySubscriptionInput input) {
         return Try.of(() -> {
-            Specification<Subscription> specification = SubscriptionQuery.getSpecification(input);
+            Specification<Subscription> specification = SubscriptionSpecification.getSpecification(input);
             return subscriptionRepository.findAll(specification, input.getPageable()).toList();
         });
     }

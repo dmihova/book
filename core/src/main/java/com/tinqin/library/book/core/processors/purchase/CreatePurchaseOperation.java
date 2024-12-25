@@ -53,8 +53,12 @@ public class CreatePurchaseOperation implements CreatePurchase {
                     .findById(UUID.fromString(bookId))
                     .orElseThrow(() -> new BusinessException(BOOK_NOT_FOUND));
 
-            if (book.getStock()<1)
-                     throw  new BusinessException(BOOK_OUT_OF_STOCK);
+            if (book.getIsDeleted())
+                throw new BusinessException(BOOK_STOPPED);
+
+
+            if (book.getStock() < 1)
+                throw new BusinessException(BOOK_OUT_OF_STOCK);
 
             Purchase newRental = Purchase
                     .builder()
@@ -66,7 +70,7 @@ public class CreatePurchaseOperation implements CreatePurchase {
             book.setStock(book.getStock() - 1);
             bookRepository.save(book);
             return purchaseRepository.save(newRental);
-        }) ;
+        });
     }
 
 

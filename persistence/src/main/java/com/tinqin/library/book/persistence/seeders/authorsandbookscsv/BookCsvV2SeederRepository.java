@@ -49,11 +49,11 @@ public class BookCsvV2SeederRepository implements ApplicationRunner {
                         .builder()
                         .title(bookArray[5].trim())
                         .authors(getDBAuthorList(bookArray[1].trim(), bookArray[2].trim()))
-                        .pages(String.valueOf(rand.nextInt(50, 1000)))
+                        .pages(rand.nextInt(50, 1000))
                         .price(BigDecimal.valueOf(rand.nextInt(5, 50)))
                         .pricePerRental(BigDecimal.valueOf(rand.nextInt(1, 5)))
                         .stock(rand.nextInt(5, 10))
-                        .createdAt(LocalDateTime.now())
+                        .createdOn(LocalDateTime.now())
                         .isDeleted(false)
                         .build())
                 .filter(bookEntity -> {

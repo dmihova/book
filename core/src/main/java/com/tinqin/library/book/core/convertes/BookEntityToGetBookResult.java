@@ -1,20 +1,18 @@
 package com.tinqin.library.book.core.convertes;
 
-import com.tinqin.library.book.api.models.book.BookModel;
 import com.tinqin.library.book.api.operations.book.getbook.GetBookResult;
 import com.tinqin.library.book.persistence.models.Book;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BookEntityToBookModel implements Converter<Book, BookModel> {
+public class BookEntityToGetBookResult implements Converter<Book, GetBookResult> {
     @Override
-    public BookModel convert(Book book) {
-        return BookModel
+    public GetBookResult convert(Book book) {
+        return GetBookResult
                 .builder()
-                .id(book.getId())
                 .title(book.getTitle())
-                .pages(book.getPages())
+                .pages(book.getPages() )
                 .price(book.getPrice())
                 .pricePerRental(book.getPricePerRental())
                 .stock(book.getStock())
@@ -30,6 +28,7 @@ public class BookEntityToBookModel implements Converter<Book, BookModel> {
                                         author.getLastName()))
                                 .toList()
                 )
+
                 .build();
     }
 }

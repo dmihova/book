@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -17,4 +18,6 @@ public interface BookRentalRepository extends JpaRepository<BookRental, UUID> {
     Optional<BookRental> findByBookAndUserAndEndDate(Book book, User user, LocalDate endDate);
 
     Page<BookRental> findAll(Specification<BookRental> specification, Pageable pageable);
+
+    List<BookRental> findAllBySubscriptionId(UUID id);
 }
