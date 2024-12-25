@@ -1,15 +1,14 @@
-package com.tinqin.library.book.core.queryfactory;
+package com.tinqin.library.book.core.specification;
 
-import com.tinqin.library.book.core.queryfactory.querymodel.BookRentalFilter;
+import com.tinqin.library.book.core.specification.filtermodel.BookRentalFilter;
 import com.tinqin.library.book.persistence.models.BookRental;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-public class BookRentalQuery {
+public class BookRentalSpecification {
 
     public static Specification<BookRental> getSpecification(BookRentalFilter filter) {
         return (root, query, criteriaBuilder) -> {
@@ -23,6 +22,13 @@ public class BookRentalQuery {
             }
             if (filter.getSubscription() != null ) {
                 predicates.add(criteriaBuilder.equal(root.get("subscription"), filter.getSubscription()));
+            }
+            if (filter.getReturned() != null ) {
+                if (filter.getReturned()) {
+                    predicates.add(criteriaBuilder.isNotNull(root.get("endDate")));
+                 }else{
+                    predicates.add(criteriaBuilder.isNull(root.get("endDate")));
+                }
             }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

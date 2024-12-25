@@ -7,9 +7,8 @@ import com.tinqin.library.book.api.operations.rental.queryrental.QueryBookRental
 import com.tinqin.library.book.api.operations.rental.queryrental.QueryBookRentalResult;
 import com.tinqin.library.book.core.errorhandler.base.ErrorHandler;
 import com.tinqin.library.book.core.errorhandler.exceptions.BusinessException;
-import com.tinqin.library.book.core.queryfactory.BookRentalQuery;
-import com.tinqin.library.book.core.queryfactory.SubscriptionQuery;
-import com.tinqin.library.book.core.queryfactory.querymodel.BookRentalFilter;
+import com.tinqin.library.book.core.specification.BookRentalSpecification;
+import com.tinqin.library.book.core.specification.filtermodel.BookRentalFilter;
 import com.tinqin.library.book.persistence.models.Book;
 import com.tinqin.library.book.persistence.models.BookRental;
 import com.tinqin.library.book.persistence.models.Subscription;
@@ -18,8 +17,6 @@ import com.tinqin.library.book.persistence.repositories.BookRentalRepository;
 import com.tinqin.library.book.persistence.repositories.BookRepository;
 import com.tinqin.library.book.persistence.repositories.SubscriptionRepository;
 import com.tinqin.library.book.persistence.repositories.UserRepository;
-import com.tinqin.library.book.persistence.models.*;
-import com.tinqin.library.book.persistence.repositories.*;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
@@ -65,10 +62,18 @@ public class QueryBookRentalsOperation implements QueryBookRental {
                         .orElseThrow(() -> new BusinessException(SUBSCRIPTION_NOT_FOUND));
             }
 
-            BookRentalFilter filter = new BookRentalFilter( user, book, subscription) ;
-            Specification<BookRental> specification = BookRentalQuery.getSpecification(filter);
+            BookRentalFilter filter = BookRentalFilter
+                    .builder()
+                    .book(book)
+                    .user(user)
+                    .subscription(subscription)
+                    .returned(input.getReturned())
+                    .build();
+            ;
+
+            Specification<BookRental> specification = BookRentalSpecification.getSpecification(filter);
             List<BookRental> entityBooks = bookRentalRepository
-                    .findAll(specification,input.getPageable()).toList();
+                    .findAll(specification, input.getPageable()).toList();
 
             List<BookRentalModel> bookRentalModels = entityBooks
                     .stream()

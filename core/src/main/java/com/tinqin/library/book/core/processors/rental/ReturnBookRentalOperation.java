@@ -24,7 +24,7 @@ import static com.tinqin.library.book.api.ValidationMessages.*;
 
 @Service
 @RequiredArgsConstructor
-public class ReturnRentalOperation implements ReturnRental {
+public class ReturnBookRentalOperation implements ReturnRental {
     private final BookRentalRepository bookRentalRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
@@ -51,6 +51,8 @@ public class ReturnRentalOperation implements ReturnRental {
                     return ReturnRentalResult
                             .builder()
                             .id(bookRentalEntity.getId())
+                            .startDate(bookRentalEntity.getStartDate())
+                            .endDate(bookRentalEntity.getEndDate())
                             .build();
                 })
                 .toEither()

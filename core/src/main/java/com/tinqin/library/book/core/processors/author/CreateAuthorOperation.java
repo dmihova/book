@@ -39,6 +39,7 @@ public class CreateAuthorOperation implements CreateAuthor {
     private Try<CreateAuthorResult> saveAuthor(CreateAuthorInput input) {
         return Try.of(() -> {
             Author newAuthor = conversionService.convert(input, Author.class);
+            assert newAuthor != null;
             Author savedAuthor = authorRepository.save(newAuthor);
             if (reportingEnabled) {
                 producerService.createAuthorRecord(savedAuthor.getId());

@@ -22,6 +22,9 @@ import com.tinqin.library.book.api.operations.book.querybook.QueryBook;
 import com.tinqin.library.book.api.operations.book.querybook.QueryBookInput;
 import com.tinqin.library.book.api.operations.book.querybook.QueryBookResult;
 import com.tinqin.library.book.rest.controllers.base.BaseController;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.vavr.control.Either;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,38 +36,73 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @RestController
 
 public class BookController extends BaseController {
+    private static final String postDescription =
+            """
+                    Get book  by title (wildcard)
+                    author:authorId or author first name (wildcard) or author last name (wildcard) or
+                    price range - priceMin&priceMax
+                    price per rental age -pricePerRentalMin& pricePerRentalMax
+                    stock range stockMin& stockMax
+                    isDeleted flag
+                    """;
 
     private final GetBook getBook;
     private final QueryBook queryBook;
-    private final CreateBook createBook;
-    private final DeleteBook deleteBook;
     private final GetBooksByAuthor getBooksByAuthor;
+
+    private final CreateBook createBook;
     private final PartialEditBook partialEditBook;
+    private final DeleteBook deleteBook;
+
+
+    @Operation(summary = "Get book UUID",
+            description = "Get book details by UUID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "404", description = "Not found")})
 
     @GetMapping(APIRoutes.GET_BOOK)
     public ResponseEntity<?> getBook(@PathVariable("bookId") String bookId) {
-        GetBookInput input = GetBookInput
+        GetBookInput bookInput = GetBookInput
                 .builder()
                 .bookId(bookId)
                 .build();
 
-        Either<OperationError, GetBookResult> result = getBook.process(input);
+        Either<OperationError, GetBookResult> result = getBook.process(bookInput);
         return mapToResponseEntity(result, HttpStatus.OK);
     }
 
+
+    @Operation(summary = "Get books by multiple criteria",
+            description = postDescription
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "404", description = "Not found")})
     @GetMapping(APIRoutes.API_BOOK)
     public ResponseEntity<?> getBooks(
             @RequestParam(value = "title%", required = false, defaultValue = "") String title,
-            @RequestParam(value = "authorId", required = false, defaultValue = "") String authorId,
+            @Valid @RequestParam(value = "authorId", required = false, defaultValue = "") String authorId,
             @RequestParam(value = "authorFirstName%", required = false, defaultValue = "") String authorFirstName,
             @RequestParam(value = "authorLastName%", required = false, defaultValue = "") String authorLastName,
+            @Valid @RequestParam(value = "priceMin", required = false) BigDecimal priceMin,
+            @Valid @RequestParam(value = "priceMax", required = false) BigDecimal priceMax,
+            @Valid @RequestParam(value = "pricePerRentalMin", required = false) BigDecimal pricePerRentalMin,
+            @Valid @RequestParam(value = "pricePerRentalMax", required = false) BigDecimal pricePerRentalMax,
+            @Valid @RequestParam(value = "stockMin", required = false) Integer stockMin,
+            @Valid @RequestParam(value = "stockMax", required = false) Integer stockMax,
+            @RequestParam(value = "isDeleted%", required = false ) Boolean isDeleted,
             @SortDefault(sort = "title", direction = Sort.Direction.ASC)
-            @PageableDefault(page = 0, size = 20
+            @PageableDefault(size = 20
             ) Pageable pageable
+
     ) {
 
         QueryBookInput input = QueryBookInput
@@ -73,6 +111,13 @@ public class BookController extends BaseController {
                 .authorId(authorId)
                 .authorFirstName(authorFirstName)
                 .authorLastName(authorLastName)
+                .priceMin(priceMin)
+                .priceMax(priceMax)
+                .pricePerRentalMin(pricePerRentalMin)
+                .pricePerRentalMax(pricePerRentalMax)
+                .stockMin(stockMin)
+                .stockMax(stockMax)
+                .isDeleted(isDeleted)
                 .pageable(pageable)
                 .build();
         Either<OperationError, QueryBookResult> result = queryBook.process(input);
@@ -82,7 +127,7 @@ public class BookController extends BaseController {
     @GetMapping(APIRoutes.API_BOOK_BY_AUTHOR)
     public ResponseEntity<?> getBooksByAuthor(@PathVariable(name = "authorId") String authorId,
                                               @SortDefault(sort = "title", direction = Sort.Direction.ASC)
-                                              @PageableDefault(page = 0, size = 10
+                                              @PageableDefault(size = 20  ///page = 0 is default value
                                               ) Pageable pageable
     ) {
 
@@ -119,7 +164,7 @@ public class BookController extends BaseController {
 
     @PatchMapping(APIRoutes.GET_BOOK)
     public ResponseEntity<?> partialEditBook(@PathVariable("bookId") String bookId,
-                                             @RequestBody PartialEditBookInput request) {
+                                             @Valid @RequestBody PartialEditBookInput request) {
 
         PartialEditBookInput input = request
                 .toBuilder()

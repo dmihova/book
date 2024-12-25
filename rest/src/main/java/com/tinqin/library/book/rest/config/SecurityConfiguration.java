@@ -13,6 +13,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.tinqin.library.book.rest.config.WhitelistedEndpoints.WHITELISTED_ENDPOINTS;
+
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity(debug = true)
@@ -22,9 +24,9 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-//                .authorizeHttpRequests(customizer -> customizer
-//                        .requestMatchers(WHITELISTED_ENDPOINTS).permitAll()
-//                        .anyRequest().authenticated())
+                ///       .authorizeHttpRequests(customizer -> customizer
+                ///              .requestMatchers(WHITELISTED_ENDPOINTS).permitAll()
+                ///               .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(
                         customizer -> customizer

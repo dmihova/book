@@ -7,13 +7,12 @@ public class WhitelistedEndpoints {
             "/swagger-resources",
             "/swagger-resources/**",
             "/v3/api-docs*/**", /// needed for swagger
+            "/api/v1/**",
 
             "/actuator/**",
             "/instances/**",
             "/v3/**",
-            "/error",
+            "/error"
 
-
-            "/api/v1/**"
     };
 }

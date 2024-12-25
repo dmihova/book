@@ -11,6 +11,7 @@ import com.tinqin.library.book.persistence.repositories.BookRepository;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -24,11 +25,12 @@ public class GetBookOperation implements GetBook {
 
     private final BookRepository bookRepository;
     private final ErrorHandler errorHandler;
+    private final ConversionService conversionService;
 
     @Override
     public Either<OperationError, GetBookResult> process(GetBookInput input) {
         return fetchBook(input)
-                .map(this::convertBookToGetBookOutput)
+                .map(book -> conversionService.convert(book, GetBookResult.class))
                 .toEither()
                 .mapLeft(errorHandler::handle);
     }
@@ -36,25 +38,5 @@ public class GetBookOperation implements GetBook {
     private Try<Book> fetchBook(GetBookInput input) {
         return Try.of(() -> bookRepository.findById(UUID.fromString(input.getBookId()))
                 .orElseThrow(() -> new BusinessException(BOOK_NOT_FOUND)));
-    }
-
-    private GetBookResult convertBookToGetBookOutput(Book book) {
-        return GetBookResult.builder()
-                .title(book.getTitle())
-                .pages(book.getPages())
-                .createdAt(book.getCreatedAt())
-                .price(book.getPrice())
-                .stock(book.getStock())
-                .authors(
-                        book.getAuthors()
-                                .stream()
-                                .map(author -> new GetBookResult.GetBookAuthor(
-                                        author.getId().toString(),
-                                        author.getFirstName(),
-                                        author.getLastName()))
-                                .toList()
-                )
-                .build();
-
     }
 }

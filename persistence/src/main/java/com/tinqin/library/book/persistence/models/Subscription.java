@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -38,6 +39,8 @@ public class Subscription {
 
     @Column(name = "can_rent")
     private Boolean canRent;
+
+
 
 
 }

@@ -32,7 +32,7 @@ public class BookCsvV1SeederDBConnection implements ApplicationRunner {
     private String postgresPassword;public
 
     String BOOKS_QUERY = """
-            INSERT INTO books (id, created_at, is_deleted, pages, price, stock, title,price_per_rental )
+            INSERT INTO books (id, created_on, is_deleted, pages, price, stock, title,price_per_rental )
             VALUES (gen_random_uuid(),
                     now(),
                     false,

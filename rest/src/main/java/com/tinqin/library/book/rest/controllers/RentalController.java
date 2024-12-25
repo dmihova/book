@@ -14,7 +14,7 @@ import com.tinqin.library.book.api.operations.rental.queryrental.QueryBookRental
 import com.tinqin.library.book.api.operations.rental.queryrental.QueryBookRentalResult;
 import com.tinqin.library.book.api.operations.rental.rerurnRental.ReturnRentalInput;
 import com.tinqin.library.book.api.operations.rental.rerurnRental.ReturnRentalResult;
-import com.tinqin.library.book.core.processors.rental.ReturnRentalOperation;
+import com.tinqin.library.book.core.processors.rental.ReturnBookRentalOperation;
 import com.tinqin.library.book.rest.controllers.base.BaseController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.vavr.control.Either;
@@ -28,6 +28,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -36,22 +38,25 @@ public class RentalController extends BaseController {
     private final CreateRental createRental;
     private final QueryBookRental queryBookRental;
     private final GetBookRental getBookRental;
-    private final ReturnRentalOperation returnRentalOperation;
+    private final ReturnBookRentalOperation returnRentalOperation;
 
 
     @GetMapping(APIRoutes.API_RENTAL)
-    public ResponseEntity<?> getRentals(@RequestParam(name = "userId", required = false, defaultValue = "") String userId,
-                                        @RequestParam(name = "bookId", required = false, defaultValue = "") String bookId,
-                                        @RequestParam(name = "subscriptionId", required = false, defaultValue = "") String subscriptionId,
-                                        @SortDefault(sort = "startDate", direction = Sort.Direction.ASC)
-                                        @PageableDefault(size = 20
-                                        ) Pageable pageable
+    public ResponseEntity<?> getRentals(
+            @RequestParam(name = "userId", required = false, defaultValue = "") String userId,
+            @RequestParam(name = "bookId", required = false, defaultValue = "") String bookId,
+            @RequestParam(name = "subscriptionId", required = false, defaultValue = "") String subscriptionId,
+            @RequestParam(name = "returned", required = false, defaultValue = "") boolean returned,
+            @SortDefault(sort = "id", direction = Sort.Direction.ASC)
+            @PageableDefault(size = 20
+            ) Pageable pageable
     ) {
         QueryBookRentalInput input = QueryBookRentalInput
                 .builder()
                 .userId(userId)
                 .subscriptionId(subscriptionId)
                 .bookId(bookId)
+                .returned(returned)
                 .pageable(pageable)
                 .build();
 

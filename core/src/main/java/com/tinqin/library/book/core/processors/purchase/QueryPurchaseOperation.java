@@ -7,8 +7,8 @@ import com.tinqin.library.book.api.operations.purchase.querypurchase.QueryPurcha
 import com.tinqin.library.book.api.operations.purchase.querypurchase.QueryPurchaseResult;
 import com.tinqin.library.book.core.errorhandler.base.ErrorHandler;
 import com.tinqin.library.book.core.errorhandler.exceptions.BusinessException;
-import com.tinqin.library.book.core.queryfactory.PurchaseQuery;
-import com.tinqin.library.book.core.queryfactory.querymodel.PurchaseFilter;
+import com.tinqin.library.book.core.specification.PurchaseSpecification;
+import com.tinqin.library.book.core.specification.filtermodel.PurchaseFilter;
 import com.tinqin.library.book.persistence.models.Book;
 import com.tinqin.library.book.persistence.models.Purchase;
 import com.tinqin.library.book.persistence.models.User;
@@ -56,7 +56,7 @@ public class QueryPurchaseOperation implements QueryPurchase {
                     .user(user)
                     .build();
 
-            Specification<Purchase> specification = PurchaseQuery.getSpecification(filter);
+            Specification<Purchase> specification = PurchaseSpecification.getSpecification(filter);
             List<Purchase> entityPurchases = purchaseRepository
                     .findAll(specification,input.getPageable()).toList();
 
@@ -88,7 +88,7 @@ public class QueryPurchaseOperation implements QueryPurchase {
                 .book(new PurchaseModel.QueryPurchaseBook(
                         entity.getBook().getId(),
                         entity.getBook().getTitle(),
-                        entity.getBook().getPages()))
+                        entity.getBook().getPages().toString()))
                 .build();
     }
 }

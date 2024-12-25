@@ -1,4 +1,4 @@
-package com.tinqin.library.book.core.queryfactory;
+package com.tinqin.library.book.core.specification;
 
 import com.tinqin.library.book.api.operations.user.queryuser.QueryUserInput;
  import com.tinqin.library.book.persistence.models.User;
@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserQuery  {
+public class UserSpecification {
 
     public static Specification<User> getSpecification( QueryUserInput filter ) {
         return (root, query, criteriaBuilder) -> {

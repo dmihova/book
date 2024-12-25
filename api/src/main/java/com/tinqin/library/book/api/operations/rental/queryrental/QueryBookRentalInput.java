@@ -24,6 +24,8 @@ public class QueryBookRentalInput implements ProcessorInput {
     @UUID
     private String bookId;
 
+    private Boolean returned;
+
     Pageable pageable;
 
 

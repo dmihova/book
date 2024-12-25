@@ -1,4 +1,4 @@
-package com.tinqin.library.book.rest.config;
+package com.tinqin.library.book.rest.notuseduserdetail.config;
 
 import com.tinqin.library.book.persistence.models.User;
 import com.tinqin.library.book.persistence.repositories.UserRepository;
@@ -7,11 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class LoginManager implements UserDetailsService {
     private final UserRepository userRepository;

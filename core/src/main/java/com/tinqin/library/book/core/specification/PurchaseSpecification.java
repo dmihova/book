@@ -1,8 +1,6 @@
-package com.tinqin.library.book.core.queryfactory;
+package com.tinqin.library.book.core.specification;
 
-import com.tinqin.library.book.core.queryfactory.querymodel.BookRentalFilter;
-import com.tinqin.library.book.core.queryfactory.querymodel.PurchaseFilter;
-import com.tinqin.library.book.persistence.models.BookRental;
+import com.tinqin.library.book.core.specification.filtermodel.PurchaseFilter;
 import com.tinqin.library.book.persistence.models.Purchase;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -10,7 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PurchaseQuery {
+public class PurchaseSpecification {
 
     public static Specification<Purchase> getSpecification(PurchaseFilter filter) {
         return (root, query, criteriaBuilder) -> {

@@ -1,4 +1,4 @@
-package com.tinqin.library.book.core.queryfactory.querymodel;
+package com.tinqin.library.book.core.specification.filtermodel;
 
 import com.tinqin.library.book.persistence.models.Book;
 import com.tinqin.library.book.persistence.models.User;
