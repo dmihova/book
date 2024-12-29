@@ -15,6 +15,9 @@ import com.tinqin.library.book.api.operations.book.createbook.CreateBookResult;
 import com.tinqin.library.book.api.operations.book.getbooksbyAuthor.GetBooksByAuthor;
 import com.tinqin.library.book.api.operations.book.getbooksbyAuthor.GetBooksByAuthorInput;
 import com.tinqin.library.book.api.operations.book.getbooksbyAuthor.GetBooksByAuthorResult;
+import com.tinqin.library.book.api.operations.book.getbooksidlist.GetBooksIdList;
+import com.tinqin.library.book.api.operations.book.getbooksidlist.GetBooksIdListInput;
+import com.tinqin.library.book.api.operations.book.getbooksidlist.GetBooksIdListResult;
 import com.tinqin.library.book.api.operations.book.partialedit.PartialEditBook;
 import com.tinqin.library.book.api.operations.book.partialedit.PartialEditBookInput;
 import com.tinqin.library.book.api.operations.book.partialedit.PartialEditBookResult;
@@ -28,6 +31,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.vavr.control.Either;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -37,7 +41,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.UUID;
+import java.time.LocalDate;
 
 @RequiredArgsConstructor
 @RestController
@@ -56,6 +60,7 @@ public class BookController extends BaseController {
     private final GetBook getBook;
     private final QueryBook queryBook;
     private final GetBooksByAuthor getBooksByAuthor;
+    private final GetBooksIdList getBooksIdList;
 
     private final CreateBook createBook;
     private final PartialEditBook partialEditBook;
@@ -88,17 +93,17 @@ public class BookController extends BaseController {
             @ApiResponse(responseCode = "404", description = "Not found")})
     @GetMapping(APIRoutes.API_BOOK)
     public ResponseEntity<?> getBooks(
-            @RequestParam(value = "title%", required = false, defaultValue = "") String title,
-            @Valid @RequestParam(value = "authorId", required = false, defaultValue = "") String authorId,
-            @RequestParam(value = "authorFirstName%", required = false, defaultValue = "") String authorFirstName,
-            @RequestParam(value = "authorLastName%", required = false, defaultValue = "") String authorLastName,
-            @Valid @RequestParam(value = "priceMin", required = false) BigDecimal priceMin,
-            @Valid @RequestParam(value = "priceMax", required = false) BigDecimal priceMax,
-            @Valid @RequestParam(value = "pricePerRentalMin", required = false) BigDecimal pricePerRentalMin,
-            @Valid @RequestParam(value = "pricePerRentalMax", required = false) BigDecimal pricePerRentalMax,
-            @Valid @RequestParam(value = "stockMin", required = false) Integer stockMin,
-            @Valid @RequestParam(value = "stockMax", required = false) Integer stockMax,
-            @RequestParam(value = "isDeleted%", required = false ) Boolean isDeleted,
+            @RequestParam(name = "title", required = false, defaultValue = "") String title,
+            @Valid @RequestParam(name = "authorId", required = false, defaultValue = "") String authorId,
+            @RequestParam(name = "authorFirstName", required = false, defaultValue = "") String authorFirstName,
+            @RequestParam(name = "authorLastName", required = false, defaultValue = "") String authorLastName,
+            @Valid @RequestParam(name = "priceMin", required = false) BigDecimal priceMin,
+            @Valid @RequestParam(name = "priceMax", required = false) BigDecimal priceMax,
+            @Valid @RequestParam(name = "pricePerRentalMin", required = false) BigDecimal pricePerRentalMin,
+            @Valid @RequestParam(name = "pricePerRentalMax", required = false) BigDecimal pricePerRentalMax,
+            @Valid @RequestParam(name = "stockMin", required = false) Integer stockMin,
+            @Valid @RequestParam(name = "stockMax", required = false) Integer stockMax,
+            @RequestParam(name = "isDeleted", required = false) Boolean isDeleted,
             @SortDefault(sort = "title", direction = Sort.Direction.ASC)
             @PageableDefault(size = 20
             ) Pageable pageable
@@ -172,8 +177,37 @@ public class BookController extends BaseController {
                 .build();
 
         Either<OperationError, PartialEditBookResult> process = partialEditBook.process(input);
-
         return mapToResponseEntity(process, HttpStatus.OK);
     }
+
+
+    @GetMapping(APIRoutes.API_BOOK_UUIDS)
+    public ResponseEntity<?> getBookIDList(
+            @RequestParam(name = "title", required = false, defaultValue = "") String title,
+            @Valid @RequestParam(name = "authorId", required = false, defaultValue = "") String authorId,
+            @RequestParam(name = "createDateMin", required = false ) LocalDate createDateMin,
+            @RequestParam(name = "createDateMax", required = false ) LocalDate createDateMax,
+            @RequestParam(name = "pageMin", required = false ) Integer pageMin,
+            @RequestParam(name = "pageMax", required = false ) Integer pageMax
+    ) {
+
+        GetBooksIdListInput  input =  GetBooksIdListInput
+                .builder()
+                .title( title)
+                .authorId( authorId)
+                .createDateMin(createDateMin)
+                .createDateMax(createDateMax)
+                .pageMin(pageMin)
+                .pageMax(pageMax)
+                .build();
+
+
+        Either<OperationError, GetBooksIdListResult> result = getBooksIdList.process(input);
+        return mapToResponseEntity(result, HttpStatus.OK);
+    }
+
+
+
+
 
 }

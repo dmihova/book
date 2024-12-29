@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-public class JsonV3FileReader implements FileReader {
+public class JsonFileReader implements FileReader {
     private final Integer batchSize;
     private final JsonParser jsonParser;
 
-    public JsonV3FileReader(String path, Integer batchSize) {
+    public JsonFileReader(String path, Integer batchSize) {
         this.batchSize = batchSize;
         this.jsonParser = initParser(path);
     }

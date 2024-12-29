@@ -1,4 +1,4 @@
-package com.tinqin.library.book.rest.notuseduserdetail.config;
+package com.tinqin.library.book.rest.notusedauth.config;
 
 import com.tinqin.library.book.persistence.models.User;
 import com.tinqin.library.book.persistence.repositories.UserRepository;

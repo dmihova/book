@@ -61,6 +61,12 @@ public class Book {
     )
     private List<Author> authors;
 
+    public String shortDisplay() {
+
+        return String.format(" %s %s  ", id.toString(), title );
+
+    }
+
 
 
 

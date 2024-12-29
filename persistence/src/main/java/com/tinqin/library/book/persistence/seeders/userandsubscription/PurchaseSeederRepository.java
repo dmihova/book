@@ -18,7 +18,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Order(3)
+@Order(4)
 public class PurchaseSeederRepository implements ApplicationRunner {
 
     private final PurchaseRepository purchaseRepository;

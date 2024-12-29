@@ -70,10 +70,10 @@ public class UserController extends BaseController {
 
     @GetMapping(APIRoutes.API_USER)
     public ResponseEntity<?> getUsers(
-            @RequestParam(value = "firstName", required = false, defaultValue = "") String firstName,
-            @RequestParam(value = "lastName", required = false, defaultValue = "") String lastName,
-            @RequestParam(value = "isAdmin", required = false  ) boolean isAdmin,
-            @RequestParam(value = "isBlocked", required = false ) boolean isBlocked,
+            @RequestParam(name = "firstName", required = false, defaultValue = "") String firstName,
+            @RequestParam(name = "lastName", required = false, defaultValue = "") String lastName,
+            @RequestParam(name = "isAdmin", required = false  ) boolean isAdmin,
+            @RequestParam(name = "isBlocked", required = false ) boolean isBlocked,
             @SortDefault(sort = "lastName", direction = Sort.Direction.ASC)
             @PageableDefault(page = 0, size = 10
             ) Pageable pageable

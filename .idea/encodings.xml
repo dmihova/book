@@ -9,6 +9,7 @@
     <file url="file://$PROJECT_DIR$/rest/src/main/resources/files/books.csv" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rest/src/main/resources/files/books_2.csv" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rest/src/main/resources/files/books_3.txt" charset="UTF-16" />
+    <file url="file://$PROJECT_DIR$/restexport/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>

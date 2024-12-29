@@ -30,6 +30,10 @@
             <version>${revision}</version>
         </dependency>
 
+
+
+
+
         <dependency>
             <groupId>com.tinqin.library.reporting</groupId>
             <artifactId>kafkaexport</artifactId>

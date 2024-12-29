@@ -5,6 +5,7 @@ import com.tinqin.library.book.api.operations.author.createauthor.CreateAuthor;
 import com.tinqin.library.book.api.operations.author.createauthor.CreateAuthorInput;
 import com.tinqin.library.book.api.operations.author.createauthor.CreateAuthorResult;
 import com.tinqin.library.book.core.errorhandler.base.ErrorHandler;
+import com.tinqin.library.book.domain.clients.ReportingClient;
 import com.tinqin.library.book.persistence.models.Author;
 import com.tinqin.library.book.persistence.repositories.AuthorRepository;
 import com.tinqin.library.reporting.kafkaexport.KafkaProducerService;
@@ -22,10 +23,14 @@ public class CreateAuthorOperation implements CreateAuthor {
     private final AuthorRepository authorRepository;
     private final ConversionService conversionService;
     private final ErrorHandler errorHandler;
-    private final KafkaProducerService producerService;
+    private final KafkaProducerService kafkaProducerService;
+    private final ReportingClient reportingClient;
 
-    @Value("${reporting.active}")
-    private boolean reportingEnabled;
+
+    @Value("${reporting.feign.active}")
+    private boolean reportingFeignEnabled;
+    @Value("${reporting.kafka.active}")
+    private boolean reportingKafkaEnabled;
 
 
     @Override
@@ -41,9 +46,14 @@ public class CreateAuthorOperation implements CreateAuthor {
             Author newAuthor = conversionService.convert(input, Author.class);
             assert newAuthor != null;
             Author savedAuthor = authorRepository.save(newAuthor);
-            if (reportingEnabled) {
-                producerService.createAuthorRecord(savedAuthor.getId());
+            if (reportingKafkaEnabled) {
+                reportingClient.createRecord();
             }
+
+            if (reportingFeignEnabled) {
+                kafkaProducerService.createAuthorRecord(savedAuthor.getId());
+            }
+
             return CreateAuthorResult.builder()
                     .id(savedAuthor.getId())
                     .build();

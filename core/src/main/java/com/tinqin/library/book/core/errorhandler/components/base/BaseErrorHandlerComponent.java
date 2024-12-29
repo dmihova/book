@@ -1,4 +1,4 @@
-package com.tinqin.library.book.core.errorhandler.components;
+package com.tinqin.library.book.core.errorhandler.components.base;
 
 import com.tinqin.library.book.core.errorhandler.base.ErrorHandlerComponent;
 

@@ -14,11 +14,11 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Slf4j
-public class CsvV1FileReader implements FileReader {
+public class CsvFileReader implements FileReader {
     private final Integer batchSize;
     private final BufferedReader reader;
 
-    public CsvV1FileReader(String path, Integer batchSize) {
+    public CsvFileReader(String path, Integer batchSize) {
         this.batchSize = batchSize;
         this.reader = initReader(path, batchSize);
     }

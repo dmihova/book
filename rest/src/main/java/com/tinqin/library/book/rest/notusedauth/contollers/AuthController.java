@@ -1,4 +1,4 @@
-package com.tinqin.library.book.rest.notuseduserdetail.contollers;
+package com.tinqin.library.book.rest.notusedauth.contollers;
 
 import com.tinqin.library.book.api.auth.login.LoginUserInput;
 import com.tinqin.library.book.api.auth.register.RegisterUser;
@@ -6,7 +6,7 @@ import com.tinqin.library.book.api.auth.register.RegisterUserInput;
 import com.tinqin.library.book.api.auth.register.RegisterUserResult;
 import com.tinqin.library.book.api.errors.OperationError;
 import com.tinqin.library.book.rest.controllers.base.BaseController;
-import com.tinqin.library.book.rest.notuseduserdetail.config.LoginManager;
+import com.tinqin.library.book.rest.notusedauth.config.LoginManager;
 import io.vavr.control.Either;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

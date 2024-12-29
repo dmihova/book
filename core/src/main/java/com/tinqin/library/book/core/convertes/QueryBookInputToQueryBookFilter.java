@@ -13,10 +13,10 @@ public class QueryBookInputToQueryBookFilter implements Converter<QueryBookInput
     public QueryBookFilter convert(@NotNull QueryBookInput source) {
         return QueryBookFilter
                 .builder()
-                .authorFirstName(source.getAuthorFirstName())
-                .authorLastName(source.getAuthorLastName())
+                .authorFirstNameLike(source.getAuthorFirstName())
+                .authorLastNameLike(source.getAuthorLastName())
                 .authorId(source.getAuthorId())
-                .title(source.getTitle())
+                .titleLike(source.getTitle())
                 .priceMax(source.getPriceMax())
                 .priceMin(source.getPriceMin())
                 .stockMin(source.getStockMin())
