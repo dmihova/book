@@ -51,8 +51,8 @@ public class SubscriptionController extends BaseController {
 
     @GetMapping(APIRoutes.API_SUBSCRIPTION)
     public ResponseEntity<?> getSubscriptions(
-            @RequestParam(value = "userId", required = false, defaultValue = "") String userId,
-            @RequestParam(value = "active", required = false, defaultValue = "") boolean active,
+            @RequestParam(name = "userId", required = false, defaultValue = "") String userId,
+            @RequestParam(name = "active", required = false, defaultValue = "") boolean active,
             @SortDefault(sort = "user", direction = Sort.Direction.ASC)
             @PageableDefault(page = 0, size = 10) Pageable pageable)
      {

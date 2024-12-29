@@ -1,4 +1,4 @@
-package com.tinqin.library.book.rest.controllers;
+package com.tinqin.library.book.rest.notusedauth.contollers;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.GetMapping;

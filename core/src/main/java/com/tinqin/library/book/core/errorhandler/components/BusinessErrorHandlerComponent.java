@@ -3,6 +3,7 @@ package com.tinqin.library.book.core.errorhandler.components;
 import com.tinqin.library.book.api.enumerations.MessageLevel;
 import com.tinqin.library.book.api.errors.BeError;
 import com.tinqin.library.book.api.errors.OperationError;
+import com.tinqin.library.book.core.errorhandler.components.base.BaseErrorHandlerComponent;
 import com.tinqin.library.book.core.errorhandler.exceptions.BusinessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;

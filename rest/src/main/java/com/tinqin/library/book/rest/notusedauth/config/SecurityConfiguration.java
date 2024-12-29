@@ -1,4 +1,4 @@
-package com.tinqin.library.book.rest.notuseduserdetail.config;
+package com.tinqin.library.book.rest.notusedauth.config;
 
 import com.tinqin.library.book.rest.config.JwtFilter;
 import lombok.RequiredArgsConstructor;

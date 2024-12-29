@@ -27,6 +27,7 @@
         <module>domain</module>
         <module>persistence</module>
         <module>rest</module>
+        <module>restexport</module>
     </modules>
 
 
@@ -50,6 +51,11 @@
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
             <version>0.10.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>9.0.0</version>
         </dependency>
 
 

@@ -2,6 +2,7 @@ package com.tinqin.library.book.persistence.repositories;
 
 import com.tinqin.library.book.persistence.models.Author;
 import com.tinqin.library.book.persistence.models.Book;
+import com.tinqin.library.book.persistence.models.BookUUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -17,4 +18,9 @@ public interface BookRepository extends JpaRepository<Book, UUID>, BookRepositor
     List<Book> findByAuthors(List<Author> authors, Pageable pageable);
 
     Page<Book> findAll(Specification<Book> specification, Pageable pageable);
+
+    List<Book> findAll(Specification<Book> specification);
+
+
+
 }

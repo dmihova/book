@@ -46,8 +46,8 @@ public class AuthorController extends BaseController {
 
     @GetMapping(APIRoutes.API_AUTHOR)
     public ResponseEntity<?> getAuthors(
-            @RequestParam(value = "firstName%", required = false, defaultValue = "") String firstName,
-            @RequestParam(value = "lastName%", required = false, defaultValue = "") String lastName
+            @RequestParam(name = "firstName", required = false, defaultValue = "") String firstName,
+            @RequestParam(name = "lastName", required = false, defaultValue = "") String lastName
     ) {
 
         QueryAuthorInput input = QueryAuthorInput
