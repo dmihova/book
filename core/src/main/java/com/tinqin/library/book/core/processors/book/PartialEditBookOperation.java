@@ -60,11 +60,10 @@ public class PartialEditBookOperation implements PartialEditBook {
 
                     JsonMergePatch patchFromInput = JsonMergePatch.fromJson(fieldsToUpdateFromInput);
                     JsonNode patchedBookMergedData = patchFromInput.apply(existingBookDB);
+                    Book updatedBookMergedData = objectMapper.treeToValue(patchedBookMergedData, Book.class);
+
 
                     List<Author> newAuthorList = fetchAuthors(input);
-
-
-                    Book updatedBookMergedData = objectMapper.treeToValue(patchedBookMergedData, Book.class);
                     if (!newAuthorList.isEmpty()) {
                         updatedBookMergedData.setAuthors(newAuthorList);
                     }

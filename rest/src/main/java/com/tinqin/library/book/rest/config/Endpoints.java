@@ -1,7 +1,6 @@
 package com.tinqin.library.book.rest.config;
 
-public class WhitelistedEndpoints {
-
+public class Endpoints {
     public static String[] WHITELISTED_ENDPOINTS = {
 
 //     "/api/v1/**"
@@ -14,6 +13,12 @@ public class WhitelistedEndpoints {
             "/instances/**",
             "/v3/**",
             "/error"
+    };
+
+
+    public static String[] ADMINENDPOINTSPOST = {
+
+            "/books"
 
 
 

@@ -31,7 +31,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.vavr.control.Either;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.constraints.UUID;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -73,7 +72,7 @@ public class BookController extends BaseController {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Not found")})
 
-    @GetMapping(APIRoutes.GET_BOOK)
+    @GetMapping(APIRoutes.API_BOOKS_ID)
     public ResponseEntity<?> getBook(@PathVariable("bookId") String bookId) {
         GetBookInput bookInput = GetBookInput
                 .builder()
@@ -94,7 +93,7 @@ public class BookController extends BaseController {
     @GetMapping(APIRoutes.API_BOOK)
     public ResponseEntity<?> getBooks(
             @RequestParam(name = "title", required = false, defaultValue = "") String title,
-            @Valid @RequestParam(name = "authorId", required = false, defaultValue = "") String authorId,
+            @Valid @RequestParam(name = "authorId", required = false) String authorId,
             @RequestParam(name = "authorFirstName", required = false, defaultValue = "") String authorFirstName,
             @RequestParam(name = "authorLastName", required = false, defaultValue = "") String authorLastName,
             @Valid @RequestParam(name = "priceMin", required = false) BigDecimal priceMin,
@@ -155,7 +154,7 @@ public class BookController extends BaseController {
         return mapToResponseEntity(process, HttpStatus.CREATED);
     }
 
-    @DeleteMapping(APIRoutes.DELETE_BOOK)
+    @DeleteMapping(APIRoutes.API_BOOKS_ID)
     public ResponseEntity<?> deleteBook(@PathVariable("bookId") String bookId) {
 
         DeleteBookInput input = DeleteBookInput
@@ -167,7 +166,7 @@ public class BookController extends BaseController {
 
     }
 
-    @PatchMapping(APIRoutes.GET_BOOK)
+    @PatchMapping(APIRoutes.API_BOOKS_ID)
     public ResponseEntity<?> partialEditBook(@PathVariable("bookId") String bookId,
                                              @Valid @RequestBody PartialEditBookInput request) {
 
@@ -184,7 +183,7 @@ public class BookController extends BaseController {
     @GetMapping(APIRoutes.API_BOOK_UUIDS)
     public ResponseEntity<?> getBookIDList(
             @RequestParam(name = "title", required = false, defaultValue = "") String title,
-            @Valid @RequestParam(name = "authorId", required = false, defaultValue = "") String authorId,
+            @Valid @RequestParam(name = "authorId", required = false ) String authorId,
             @RequestParam(name = "createDateMin", required = false ) LocalDate createDateMin,
             @RequestParam(name = "createDateMax", required = false ) LocalDate createDateMax,
             @RequestParam(name = "pageMin", required = false ) Integer pageMin,

@@ -2,6 +2,7 @@ package com.tinqin.library.book.persistence.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.UUID;
 
@@ -26,19 +27,21 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "is_admin")
-    private boolean isAdmin;
-
-    @Column(name = "is_blocked")
-    private boolean isBlocked;
-
     @Column(name = "username" ,unique = true,nullable = false)
     private String username;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "email")
+    @Column(name = "email",unique = true,nullable = false)
     private String email;
 
+    @Column(name = "is_admin"  )
+    private boolean isAdmin;
+
+    @Column(name = "is_blocked")
+    private boolean isBlocked;
+
+    @Column(name = "is_activated")
+    private boolean isActivated;
 }

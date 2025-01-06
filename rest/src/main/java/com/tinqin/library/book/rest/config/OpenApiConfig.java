@@ -14,4 +14,6 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
         in = SecuritySchemeIn.HEADER
 )
 public class OpenApiConfig {
+    ///  for swagger to have additional headers
+    //+description in REST controller @SecurityRequirement(name = "Bearer Authentication")
 }
