@@ -45,8 +45,8 @@ public class PurchaseController extends BaseController {
 
 
     @GetMapping(APIRoutes.API_PURCHASE)
-    public ResponseEntity<?> getPurchases(@RequestParam(name = "userId", required = false, defaultValue = "") String userId,
-                                          @RequestParam(name = "bookId", required = false, defaultValue = "") String bookId,
+    public ResponseEntity<?> getPurchases(@RequestParam(name = "userId", required = false ) String userId,
+                                          @RequestParam(name = "bookId", required = false ) String bookId,
                                           @SortDefault(sort = "purchaseDate", direction = Sort.Direction.ASC)
                                           @PageableDefault(page = 0, size = 10
                                           ) Pageable pageable

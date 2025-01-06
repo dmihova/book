@@ -43,9 +43,9 @@ public class RentalController extends BaseController {
 
     @GetMapping(APIRoutes.API_RENTAL)
     public ResponseEntity<?> getRentals(
-            @RequestParam(name = "userId", required = false, defaultValue = "") String userId,
-            @RequestParam(name = "bookId", required = false, defaultValue = "") String bookId,
-            @RequestParam(name = "subscriptionId", required = false, defaultValue = "") String subscriptionId,
+            @RequestParam(name = "userId", required = false ) String userId,
+            @RequestParam(name = "bookId", required = false ) String bookId,
+            @RequestParam(name = "subscriptionId", required = false ) String subscriptionId,
             @RequestParam(name = "returned", required = false, defaultValue = "") boolean returned,
             @SortDefault(sort = "id", direction = Sort.Direction.ASC)
             @PageableDefault(size = 20

@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -21,10 +22,18 @@ import java.util.Optional;
 public class JwtFilter extends OncePerRequestFilter {
     private final AuthClient authClient;
 
+    @Value("${authentication.active}")
+    private Boolean authenticationEnabled;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if (!authenticationEnabled) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String requestUrl = request.getRequestURI();
-        String[] whitelistedEndpoints = WhitelistedEndpoints.WHITELISTED_ENDPOINTS;
+        String[] whitelistedEndpoints = Endpoints.WHITELISTED_ENDPOINTS;
 
         AntPathMatcher antPathMatcher = new AntPathMatcher();
 
@@ -32,14 +41,28 @@ public class JwtFilter extends OncePerRequestFilter {
                 .stream(whitelistedEndpoints)
                 .anyMatch(endpoint -> antPathMatcher.match(endpoint, requestUrl));
 
+
         if (isWhitelisted) {
             filterChain.doFilter(request, response);
             return;
         }
 
+        String authHeader = Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION)).orElse("");
+
+        boolean isAdminRequired = false;
+        if (request.getMethod().equals("POST")) {
+            String[] adminEndpoints = Endpoints.ADMINENDPOINTSPOST;
+            isAdminRequired = Arrays
+                    .stream(adminEndpoints)
+                    .anyMatch(endpoint -> antPathMatcher.match(endpoint, requestUrl));
+
+        }
+        String role = "";
+        if (isAdminRequired) {role="admin";}
+
+
         try {
-            String authHeader = Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION)).orElse("");
-            authClient.validate(authHeader);
+            authClient.verify(authHeader,role);
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
