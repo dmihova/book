@@ -5,6 +5,7 @@ import com.tinqin.library.book.api.operations.author.getauthor.GetAuthor;
 import com.tinqin.library.book.api.operations.author.getauthor.GetAuthorInput;
 import com.tinqin.library.book.api.operations.author.getauthor.GetAuthorResult;
 import com.tinqin.library.book.core.errorhandler.base.ErrorHandler;
+import com.tinqin.library.book.core.errorhandler.exceptions.BusinessException;
 import com.tinqin.library.book.persistence.models.Author;
 import com.tinqin.library.book.persistence.repositories.AuthorRepository;
 import io.vavr.control.Either;
@@ -36,7 +37,7 @@ public class GetAuthorOperation implements GetAuthor {
     private Try<Author> fetchAuthor(GetAuthorInput input) {
         return Try.of(() -> authorRepository
                 .findById(UUID.fromString(input.getAuthorId()))
-                .orElseThrow(() -> new RuntimeException(AUTHOR_NOT_FOUND)));
+                .orElseThrow(() -> new BusinessException(AUTHOR_NOT_FOUND)));
 
     }
 
