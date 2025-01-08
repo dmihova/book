@@ -25,6 +25,7 @@ import com.tinqin.library.book.api.operations.book.querybook.QueryBook;
 import com.tinqin.library.book.api.operations.book.querybook.QueryBookInput;
 import com.tinqin.library.book.api.operations.book.querybook.QueryBookResult;
 import com.tinqin.library.book.rest.controllers.base.BaseController;
+import com.tinqin.library.book.documentationexporter.annotation.DocumentedApi;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -46,13 +47,13 @@ import java.time.LocalDate;
 @RestController
 
 public class BookController extends BaseController {
-    private static final String postDescription =
+    private static final String GET_DESCRIPTION =
             """
-                    Get book  by title (wildcard)
-                    author:authorId or author first name (wildcard) or author last name (wildcard) or
-                    price range - priceMin&priceMax
-                    price per rental age -pricePerRentalMin& pricePerRentalMax
-                    stock range stockMin& stockMax
+                    Get book  by title (wildcard) <br>
+                    author:authorId or author first name (wildcard) or author last name (wildcard)  <br>
+                    price range - priceMin&priceMax <br>
+                    price per rental age -pricePerRentalMin& pricePerRentalMax <br>
+                    stock range stockMin& stockMax <br>
                     isDeleted flag
                     """;
 
@@ -65,7 +66,7 @@ public class BookController extends BaseController {
     private final PartialEditBook partialEditBook;
     private final DeleteBook deleteBook;
 
-
+    @DocumentedApi(classType = GetBookResult.class)
     @Operation(summary = "Get book UUID",
             description = "Get book details by UUID")
     @ApiResponses(value = {
@@ -78,15 +79,13 @@ public class BookController extends BaseController {
                 .builder()
                 .bookId(bookId)
                 .build();
-
         Either<OperationError, GetBookResult> result = getBook.process(bookInput);
         return mapToResponseEntity(result, HttpStatus.OK);
     }
 
 
     @Operation(summary = "Get books by multiple criteria",
-            description = postDescription
-    )
+            description = GET_DESCRIPTION)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Not found")})
@@ -183,30 +182,25 @@ public class BookController extends BaseController {
     @GetMapping(APIRoutes.API_BOOK_UUIDS)
     public ResponseEntity<?> getBookIDList(
             @RequestParam(name = "title", required = false, defaultValue = "") String title,
-            @Valid @RequestParam(name = "authorId", required = false ) String authorId,
-            @RequestParam(name = "createDateMin", required = false ) LocalDate createDateMin,
-            @RequestParam(name = "createDateMax", required = false ) LocalDate createDateMax,
-            @RequestParam(name = "pageMin", required = false ) Integer pageMin,
-            @RequestParam(name = "pageMax", required = false ) Integer pageMax
+            @Valid @RequestParam(name = "authorId", required = false) String authorId,
+            @RequestParam(name = "createDateMin", required = false) LocalDate createDateMin,
+            @RequestParam(name = "createDateMax", required = false) LocalDate createDateMax,
+            @RequestParam(name = "pageMin", required = false) Integer pageMin,
+            @RequestParam(name = "pageMax", required = false) Integer pageMax
     ) {
 
-        GetBooksIdListInput  input =  GetBooksIdListInput
+        GetBooksIdListInput input = GetBooksIdListInput
                 .builder()
-                .title( title)
-                .authorId( authorId)
+                .title(title)
+                .authorId(authorId)
                 .createDateMin(createDateMin)
                 .createDateMax(createDateMax)
                 .pageMin(pageMin)
                 .pageMax(pageMax)
                 .build();
-
-
         Either<OperationError, GetBooksIdListResult> result = getBooksIdList.process(input);
         return mapToResponseEntity(result, HttpStatus.OK);
     }
-
-
-
 
 
 }

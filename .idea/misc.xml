@@ -10,6 +10,7 @@
         <option value="$PROJECT_DIR$/persistence/pom.xml" />
         <option value="$PROJECT_DIR$/rest/pom.xml" />
         <option value="$PROJECT_DIR$/restexport/pom.xml" />
+        <option value="$PROJECT_DIR$/documentation-exporter/pom.xml" />
       </list>
     </option>
   </component>
