@@ -9,9 +9,10 @@
         <outputRelativeToContentRoot value="true" />
         <module name="rest" />
         <module name="core" />
+        <module name="documentation-exporter" />
+        <module name="domain" />
         <module name="persistence" />
         <module name="api" />
-        <module name="domain" />
         <module name="restexport" />
       </profile>
     </annotationProcessing>
@@ -20,6 +21,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api" options="-parameters" />
       <module name="core" options="-parameters" />
+      <module name="documentation-exporter" options="-parameters" />
       <module name="domain" options="-parameters" />
       <module name="persistence" options="-parameters" />
       <module name="rest" options="-parameters" />
