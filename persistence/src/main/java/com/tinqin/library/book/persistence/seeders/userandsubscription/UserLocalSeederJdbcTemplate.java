@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class UserLocalSeederJdbcTemplate implements ApplicationRunner {
     private final JdbcTemplate jdbcTemplate;
     private final String INSERT_USER_QUERY_TEMPLATE = """
-            INSERT INTO users (id,username,first_name, last_name,is_admin,is_blocked,password,email)
+            INSERT INTO users (id,username,first_name, last_name,is_admin,is_blocked,password,email,is_activated)
             VALUES """;
 
     private final List<String> users = List.of(
@@ -48,14 +48,15 @@ public class UserLocalSeederJdbcTemplate implements ApplicationRunner {
                 .stream()
                 .map(userLine -> userLine.split(" "))
                 .map(userArray ->
-                        String.format("(gen_random_uuid(), '%s', '%s', '%s',  '%s', '%s',  '%s', '%s')",
+                        String.format("(gen_random_uuid(), '%s', '%s', '%s',  '%s', '%s',  '%s', '%s', '%s')",
                                 userArray[0].trim()+userArray[1].trim(),
                                 userArray[0].trim(),
                                 userArray[1].trim(),
                                 userArray[2].equals("0") ? "false" : "true",
                                 userArray[3].equals("0") ? "false" : "true",
                                 userArray[0].trim()+userArray[1].trim(),
-                                userArray[0].trim()+userArray[1].trim()
+                                userArray[0].trim()+userArray[1].trim(),
+                                "true"
                         )
                 )
                 .collect(Collectors.joining(", "));

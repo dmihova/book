@@ -16,8 +16,8 @@ public class UserEntityToUserModel implements Converter<User, UserModel> {
                 .id(String.valueOf(source.getId()))
                 .firstName(source.getFirstName())
                 .lastName(source.getLastName())
-                .isAdmin(source.isAdmin())
-                .isBlocked(source.isBlocked())
+                .isAdmin(source.getIsAdmin())
+                .isBlocked(source.getIsBlocked())
                 .build();
     }
 }
