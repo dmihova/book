@@ -57,13 +57,7 @@ public class QueryBookOperation implements QueryBook {
                 .findAll(specification, input.getPageable()).toList();
     }
 
-   private Collection<Book> getBooksByParameterV2(QueryBookInput input) {
-       QueryBookFilterRepo filter = conversionService.convert(input, QueryBookFilterRepo.class);
-        return bookRepository
-                .findBooksByFilter(filter, input.getPageable()) ;
 
-
-    }
 }
 
 
