@@ -42,7 +42,7 @@ public class UserUnblockProcessor implements UnblockUser {
     }
 
     private Try<User> isBlockedUser(User user) {
-        return user.isBlocked() ?
+        return user.getIsBlocked() ?
                 Try.success(user) :
                 Try.failure(new BusinessException(USER_IS_NOT_BLOCKED));
     }
@@ -50,7 +50,7 @@ public class UserUnblockProcessor implements UnblockUser {
 
     private Try<User> unblockUser(User userToUnblock) {
         return Try.of(() -> {
-            userToUnblock.setBlocked(false);
+            userToUnblock.setIsBlocked(false);
             userRepository.save(userToUnblock);
             return userToUnblock;
         });

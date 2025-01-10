@@ -27,11 +27,13 @@ import com.tinqin.library.book.api.operations.book.querybook.QueryBookResult;
 import com.tinqin.library.book.rest.controllers.base.BaseController;
 import com.tinqin.library.book.documentationexporter.annotation.DocumentedApi;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.vavr.control.Either;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -195,12 +197,23 @@ public class BookController extends BaseController {
                 .authorId(authorId)
                 .createDateMin(createDateMin)
                 .createDateMax(createDateMax)
-                .pageMin(pageMin)
-                .pageMax(pageMax)
+                .sizeMin(pageMin)
+                .sizeMax(pageMax)
                 .build();
         Either<OperationError, GetBooksIdListResult> result = getBooksIdList.process(input);
         return mapToResponseEntity(result, HttpStatus.OK);
     }
+
+
+    @GetMapping(APIRoutes.API_BOOK_UUIDS_V2)
+    public ResponseEntity<?> getBookIDListV2(GetBooksIdListInput param ) {
+        if (param == null) {
+            param = new GetBooksIdListInput();
+        }
+        Either<OperationError, GetBooksIdListResult> result = getBooksIdList.process(param);
+        return mapToResponseEntity(result, HttpStatus.OK);
+    }
+
 
 
 }

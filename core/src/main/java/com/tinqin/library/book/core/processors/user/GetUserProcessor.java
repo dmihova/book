@@ -43,8 +43,8 @@ public class GetUserProcessor implements GetUser {
                 .id(user.getId().toString())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .isBlocked(user.isBlocked())
-                .isAdmin(user.isAdmin())
+                .isBlocked(user.getIsBlocked())
+                .isAdmin(user.getIsAdmin())
                 .build();
     }
 

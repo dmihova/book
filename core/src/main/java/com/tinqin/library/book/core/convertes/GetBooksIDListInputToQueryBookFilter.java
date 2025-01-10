@@ -15,8 +15,8 @@ public class GetBooksIDListInputToQueryBookFilter implements Converter<GetBooksI
                 .builder()
                 .authorId(source.getAuthorId())
                 .title(source.getTitle())
-                .pageMin(source.getPageMin())
-                .pageMax(source.getPageMax())
+                .pageMin(source.getSizeMin())
+                .pageMax(source.getSizeMax())
                 .createDateMin(source.getCreateDateMin())
                 .createDateMax(source.getCreateDateMax())
                 .build();

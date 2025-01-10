@@ -42,20 +42,20 @@ public class UserBlockProcessor implements BlockUser {
     }
 
     private Try<User> validateAdmin(User userEntity) {
-        return !userEntity.isAdmin() ?
+        return !userEntity.getIsAdmin() ?
                 Try.success(userEntity) :
                 Try.failure(new BusinessException(USER_IS_ADMIN));
     }
 
     private Try<User> validateUnblockedUser(User userEntity) {
-        return !userEntity.isBlocked() ?
+        return !userEntity.getIsBlocked() ?
                 Try.success(userEntity) :
                 Try.failure(new BusinessException(USER_IS_ALREADY_BLOCK));
     }
 
     private Try<User> blockUserAndSave(User userToBlock) {
         return Try.of(() -> {
-            userToBlock.setBlocked(true);
+            userToBlock.setIsBlocked(true);
             return userRepository.save(userToBlock);
         });
     }

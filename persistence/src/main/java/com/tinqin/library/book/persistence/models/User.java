@@ -37,11 +37,11 @@ public class User {
     private String email;
 
     @Column(name = "is_admin"  )
-    private boolean isAdmin;
+    private Boolean isAdmin;
 
     @Column(name = "is_blocked")
-    private boolean isBlocked;
+    private Boolean isBlocked;
 
     @Column(name = "is_activated")
-    private boolean isActivated;
+    private Boolean isActivated;
 }

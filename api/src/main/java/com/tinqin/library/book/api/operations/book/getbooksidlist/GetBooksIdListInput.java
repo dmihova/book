@@ -22,8 +22,8 @@ public class GetBooksIdListInput implements ProcessorInput {
     @UUID
     private String authorId;
 
-    private Integer pageMin ;
-    private Integer pageMax ;
+    private Integer sizeMin ;
+    private Integer sizeMax ;
 
     private LocalDate createDateMin ;
     private LocalDate createDateMax ;

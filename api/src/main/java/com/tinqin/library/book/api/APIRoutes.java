@@ -6,7 +6,9 @@ public class APIRoutes {
     public static final String API_BOOK = API + "/books";
     public static final String API_BOOKS_ID = API_BOOK + "/{bookId}";
     public static final String API_BOOK_BY_AUTHOR = API_BOOK + "/by-author/{authorId}";
-    public static final String API_BOOK_UUIDS = API_BOOK + "/uuid_list";
+    public static final String API_BOOK_UUIDS = API_BOOK + "/uuid-list";
+    public static final String API_BOOK_UUIDS_V2 = API_BOOK + "/uuid-list-v2";
+
 
     public static final String API_AUTHOR = API + "/authors";
     public static final String GET_AUTHOR = API_AUTHOR + "/{authorId}";
