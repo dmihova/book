@@ -1,17 +1,20 @@
 package com.tinqin.library.book.persistence.repositories;
 
 import com.tinqin.library.book.persistence.models.Book;
+import com.tinqin.library.book.persistence.projections.BookUUID;
 import com.tinqin.library.book.persistence.repositories.filter.BookQueryFactory;
 import com.tinqin.library.book.persistence.repositories.filter.QueryBookFilterRepo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @Repository
@@ -45,4 +48,5 @@ public class BookRepositoryCustomImpl implements BookRepositoryCustom {
                 .setMaxResults(pageable.getPageSize())
                 .getResultList();
     }
+
 }

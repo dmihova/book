@@ -9,6 +9,7 @@ import com.tinqin.library.book.core.errorhandler.base.ErrorHandler;
 import com.tinqin.library.book.core.specification.BookSpecification;
 import com.tinqin.library.book.core.specification.filtermodel.QueryBookFilter;
 import com.tinqin.library.book.persistence.models.Book;
+import com.tinqin.library.book.persistence.projections.BookUUID;
 import com.tinqin.library.book.persistence.repositories.BookRepository;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
@@ -46,12 +47,24 @@ public class GetBooksIdListOperation implements GetBooksIdList {
 
     private Try<List<UUID>> getBooks(GetBooksIdListInput input) {
         return Try.of(() -> {
-                    QueryBookFilter filter = conversionService.convert(input, QueryBookFilter.class);
-                    Specification<Book> specification = BookSpecification.getSpecification(filter);
-                    return bookRepository.findAll(specification)
-                            .stream()
-                            .map(Book::getId)
-                            .toList();
+                    if ((input.getTitle() == null ||input.getTitle().isEmpty())                            &&
+                            input.getAuthorId() == null &&
+                            input.getCreateDateMin() == null && input.getCreateDateMax() == null &&
+                            input.getSizeMin() == null && input.getSizeMax() == null) {
+                        return bookRepository.findAllUUID()
+                                .stream()
+                                .map(BookUUID::getId)
+                                .toList();
+
+                    } else {
+                        QueryBookFilter filter = conversionService.convert(input, QueryBookFilter.class);
+                        Specification<Book> specification = BookSpecification.getSpecification(filter);
+                        return bookRepository.findAll(specification)
+                                .stream()
+                                .map(Book::getId)
+                                .toList();
+
+                    }
                 }
         );
     }
