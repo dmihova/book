@@ -38,9 +38,11 @@ public class RentalsSeederRepository implements ApplicationRunner {
 
         List<Subscription> subscriptions = subscriptionRepository.findAll();
         int count = subscriptions.size();
+        if (count <1) { return;}
+
         Pageable pageable = PageRequest.of(0, count);
         List<Book> books = bookRepository.findAll(pageable).getContent();
-
+        if (books.isEmpty()) {return;}
 
         for (int i = 0; i < count; i++) {
             BookRental rental = BookRental
