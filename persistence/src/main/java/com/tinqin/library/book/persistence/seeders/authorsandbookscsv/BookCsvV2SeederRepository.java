@@ -7,6 +7,7 @@ import com.tinqin.library.book.persistence.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -21,6 +23,7 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 @Order(3)
+@Profile("!test")
 public class BookCsvV2SeederRepository implements ApplicationRunner {
 
     private final BookRepository bookRepository;
@@ -35,8 +38,8 @@ public class BookCsvV2SeederRepository implements ApplicationRunner {
             return;
         }
 
-        String fileWithPath = "rest/src/main/resources/files/v2csv/books_2.csv";
-        //  String currentRelativePath = Paths.get("").toAbsolutePath().toString();
+        String fileWithPath = "src/main/resources/files/v2csv/books_2.csv";
+        String currentRelativePath = Paths.get("").toAbsolutePath().toString();
         Random rand = new Random();
 
         List<Book> newBooks = Files.readAllLines(Path.of(fileWithPath))

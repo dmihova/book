@@ -35,9 +35,12 @@ public class PurchaseSeederRepository implements ApplicationRunner {
 
         List<User> users = userRepository.findAll();
         int count = users.size();
+        if (count<1) {
+            return;
+        }
         Pageable pageable = PageRequest.of(0, count);
         List<Book> bookList = bookRepository.findAll(pageable).getContent();
-
+        if (bookList.isEmpty()) { return; }
         for (int i = 0; i < count; i++) {
             Purchase newPurchase = Purchase
                     .builder()

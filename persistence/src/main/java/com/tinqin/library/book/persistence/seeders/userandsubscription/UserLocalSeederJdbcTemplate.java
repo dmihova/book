@@ -3,6 +3,7 @@ package com.tinqin.library.book.persistence.seeders.userandsubscription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 @Order(2)
+@Profile("!test")
 public class UserLocalSeederJdbcTemplate implements ApplicationRunner {
     private final JdbcTemplate jdbcTemplate;
     private final String INSERT_USER_QUERY_TEMPLATE = """
